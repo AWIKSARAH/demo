@@ -1,12 +1,12 @@
-import { Home, Profile, SignUp,Listing } from "@/pages";
+import { Home, Profile, SignUp, Listing, SocialMedia } from "@/pages";
 import {
   HomeIcon,
   UserCircleIcon,
-  UserPlusIcon,
+  WifiIcon,
   DocumentTextIcon,
   NewspaperIcon,
 } from "@heroicons/react/24/solid";
-
+import { AnnouncementForm } from '@/widgets/form'
 export const routes = [
   {
     icon: HomeIcon,
@@ -24,13 +24,19 @@ export const routes = [
     icon: DocumentTextIcon,
     name: "Announcements",
     path: "/announcements",
-    element: <Listing/>,
+    element: <Listing />,
   },
   {
     icon: NewspaperIcon,
     name: "Feeds",
     path: "/feeds",
     element: <SignUp />,
+  },
+  {
+    icon: WifiIcon,
+    name: "Social Media",
+    path: "/social",
+    element: <SocialMedia />,
   },
 
 ];

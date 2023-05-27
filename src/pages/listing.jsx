@@ -1,5 +1,6 @@
 import { Avatar, Typography, Button } from "@material-tailwind/react";
 import React, { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   MapPinIcon,
@@ -80,7 +81,7 @@ function Profile() {
                     color="primary"
                     className="px-8 py-2"
                   >
-                    Add New Announcement
+                    <Link to="/announcementForm">Add New Announcement</Link>
                   </Button>
                 </div>
                 <div className="w-full px-4 lg:order-1 lg:w-4/12">
