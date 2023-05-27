@@ -200,7 +200,7 @@ function Profile() {
 
               <div className="mb-10 border-t border-blue-gray-50 py-6 text-center">
                 <div className="mt-2 flex flex-wrap justify-center">
-                  <div className="flex w-full flex-col items-center px-4 lg:w-9/12">
+                  <div className="flex w-full flex-col items-center px-4 lg:w-10.2/12">
                     <AnimatePresence>
                       <div className="feed-grid">
                         {data &&
