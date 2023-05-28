@@ -1,5 +1,3 @@
-
-
 import React, { useState } from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
 import { Radio, FormControlLabel, TextField } from '@mui/material';
@@ -7,15 +5,12 @@ import { Typography } from "@material-tailwind/react";
 import emailjs from "emailjs-com";
 import Swal from "sweetalert"
 
-const DropdownMenu = ({ id }) => {
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const [isOpen, setIsModalOpen] = useState(false);
+export const ReportDialog = ({ isOpen, onClose, id }) => {
     const [reason, setReason] = useState('');
     const [description, setDescription] = useState('');
     const [contact, setContact] = useState('');
     const [errors, setErrors] = useState({});
     const [name, setName] = useState('');
-
 
     const handleDescriptionChange = (event) => {
         setDescription(event.target.value);
@@ -23,18 +18,6 @@ const DropdownMenu = ({ id }) => {
 
     const handleContactChange = (event) => {
         setContact(event.target.value);
-    };
-
-    const toggleDropdown = () => {
-        setIsDropdownOpen(!isDropdownOpen);
-    };
-
-    const openModal = () => {
-        setIsModalOpen(true);
-    };
-
-    const closeModal = () => {
-        setIsModalOpen(false);
     };
 
     const handleReasonChange = (event) => {
@@ -69,13 +52,12 @@ const DropdownMenu = ({ id }) => {
                 )
                 .then(
                     (response) => {
-                        // this.setState({ status: response.status });
                         Swal({
                             title: 'Success',
                             text: 'The Report was sent successfully!',
                             icon: 'success',
                         });
-                        setIsModalOpen(false)
+                        onClose();
                     },
                     (error) => {
                         Swal({
@@ -90,7 +72,107 @@ const DropdownMenu = ({ id }) => {
         }
     };
 
+    return (
+        <Dialog open={isOpen} onClose={onClose} aria-labelledby="report-dialog-title">
+            <DialogTitle id="report-dialog-title">Report</DialogTitle>
+            <DialogContent>
+                <form className="space-y-4">
+                    <div>
+                        <Typography variant="subtitle1">Contact Information:</Typography>
+                        <TextField
+                            type="text"
+                            value={name}
+                            onChange={(e) => { setName(e.target.value) }}
+                            variant="outlined"
+                            required
+                            fullWidth
+                            error={!!errors.contact}
+                            helperText={errors.contact}
+                        />
+                    </div>
+                    <div>
+                        <Typography variant="subtitle1">Reason for Report:</Typography>
+                        <FormControlLabel
+                            value="spam"
+                            control={<Radio color="primary" />}
+                            label="Spam"
+                            checked={reason === 'spam'}
+                            onChange={handleReasonChange}
+                        />
+                        <FormControlLabel
+                            value="inappropriate"
+                            control={<Radio color="primary" />}
+                            label="Inappropriate Content"
+                            checked={reason === 'inappropriate'}
+                            onChange={handleReasonChange}
+                        />
+                        <FormControlLabel
+                            value="misinformation"
+                            control={<Radio color="primary" />}
+                            label="Misinformation"
+                            checked={reason === 'misinformation'}
+                            onChange={handleReasonChange}
+                        />
+                        <FormControlLabel
+                            value="iKnowInfo"
+                            control={<Radio color="primary" />}
+                            label="I know information about it..."
+                            checked={reason === 'iKnowInfo'}
+                            onChange={handleReasonChange}
+                        />
+                    </div>
+                    <div>
+                        <Typography variant="subtitle1">Description:</Typography>
+                        <TextField
+                            multiline
+                            rows={4}
+                            value={description}
+                            onChange={handleDescriptionChange}
+                            variant="outlined"
+                            required
+                            fullWidth
+                            error={!!errors.description}
+                            helperText={errors.description}
+                        />
+                    </div>
+                    <div>
+                        <Typography variant="subtitle1">Contact Information:</Typography>
+                        <TextField
+                            type="text"
+                            value={contact}
+                            onChange={handleContactChange}
+                            variant="outlined"
+                            required
+                            fullWidth
+                            error={!!errors.contact}
+                            helperText={errors.contact}
+                        />
+                    </div>
+                </form>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={onClose} color="primary">
+                    Cancel
+                </Button>
+                <Button onClick={handleSubmit} color="primary">
+                    Submit Report
+                </Button>
+            </DialogActions>
+        </Dialog>
+    );
+};
 
+const DropdownButton = ({ onOpen }) => {
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+    const toggleDropdown = () => {
+        setIsDropdownOpen(!isDropdownOpen);
+    };
+
+    const openModal = () => {
+        onOpen();
+        toggleDropdown();
+    };
 
     return (
         <div className="relative inline-block">
@@ -129,96 +211,26 @@ const DropdownMenu = ({ id }) => {
                     </ul>
                 </div>
             )}
-
-            <Dialog open={isOpen} onClose={closeModal} aria-labelledby="report-dialog-title">
-                <DialogTitle id="report-dialog-title">Report</DialogTitle>
-                <DialogContent>
-                    <form className="space-y-4">
-                        <div>
-                            <Typography variant="subtitle1">Contact Information:</Typography>
-                            <TextField
-                                type="text"
-                                value={name}
-                                onChange={(e) => { setName(e.target.value) }}
-                                variant="outlined"
-                                required
-                                fullWidth
-                                error={!!errors.contact}
-                                helperText={errors.contact}
-                            />
-                        </div>
-                        <div>
-                            <Typography variant="subtitle1">Reason for Report:</Typography>
-                            <FormControlLabel
-                                value="spam"
-                                control={<Radio color="primary" />}
-                                label="Spam"
-                                checked={reason === 'spam'}
-                                onChange={handleReasonChange}
-                            />
-                            <FormControlLabel
-                                value="inappropriate"
-                                control={<Radio color="primary" />}
-                                label="Inappropriate Content"
-                                checked={reason === 'inappropriate'}
-                                onChange={handleReasonChange}
-                            />
-                            <FormControlLabel
-                                value="misinformation"
-                                control={<Radio color="primary" />}
-                                label="Misinformation"
-                                checked={reason === 'misinformation'}
-                                onChange={handleReasonChange}
-                            />
-
-                            <FormControlLabel
-                                value="misinformation"
-                                control={<Radio color="primary" />}
-                                label="I know information about it..."
-                                checked={reason === 'misinformation'}
-                                onChange={handleReasonChange}
-                            />
-                        </div>
-                        <div>
-                            <Typography variant="subtitle1">Description:</Typography>
-                            <TextField
-                                multiline
-                                rows={4}
-                                value={description}
-                                onChange={handleDescriptionChange}
-                                variant="outlined"
-                                required
-                                fullWidth
-                                error={!!errors.description}
-                                helperText={errors.description}
-                            />
-                        </div>
-                        <div>
-                            <Typography variant="subtitle1">Contact Information:</Typography>
-                            <TextField
-                                type="text"
-                                value={contact}
-                                onChange={handleContactChange}
-                                variant="outlined"
-                                required
-                                fullWidth
-                                error={!!errors.contact}
-                                helperText={errors.contact}
-                            />
-                        </div>
-                    </form>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={closeModal} color="primary">
-                        Cancel
-                    </Button>
-                    <Button onClick={handleSubmit} color="primary">
-                        Submit Report
-                    </Button>
-                </DialogActions>
-            </Dialog>
-
         </div>
+    );
+};
+
+const DropdownMenu = ({ id }) => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+
+    return (
+        <>
+            <DropdownButton onOpen={openModal} />
+            <ReportDialog isOpen={isModalOpen} onClose={closeModal} id={id} />
+        </>
     );
 };
 

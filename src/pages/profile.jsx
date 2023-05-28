@@ -20,7 +20,8 @@ import Point from "ol/geom/Point";
 import { Vector as VectorSource } from "ol/source";
 import { Vector as VectorLayer } from "ol/layer";
 import { Circle as CircleStyle, Fill, Stroke, Style } from "ol/style";
-
+import { ReportDialog } from "../widgets/option/option";
+import Swal from "sweetalert"
 
 export function Profile() {
   const [data, setData] = useState([]);
@@ -31,7 +32,6 @@ export function Profile() {
   const [comment, setComment] = useState([]);
   const [name, setName] = useState("");
   const [sent, setSent] = useState(false);
-  const [openDialog, setOpenDialog] = useState(false);
   const [url, setUrl] = useState('/img/background-1.jpg')
   const [isLoading, setIsLoading] = useState(true); // Add isLoading state
 
@@ -56,7 +56,18 @@ export function Profile() {
 
     fetchData();
 
-  }, [id]);
+  }, [id, sent]);
+
+
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const openDialog = () => {
+    setIsDialogOpen(true);
+  };
+
+  const closeDialog = () => {
+    setIsDialogOpen(false);
+  };
 
   const handleShowMore = () => {
     setShowMore(!showMore)
@@ -127,32 +138,44 @@ export function Profile() {
     return [0, 0];
   };
 
-  const postComment = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
     const commentUrl = "http://localhost:5000/api/comment";
     const oldPostUrl = `http://localhost:5000/api/a/${id}`;
 
-    alert(comment);
     axios
       .post(commentUrl, comment)
       .then((response) => {
         const newCommentId = response.data.data._id;
-        console.log(response);
-        alert(newCommentId);
         axios
           .post(oldPostUrl, { reactionId: newCommentId })
           .then((response) => {
-            console.log(response);
-            alert("Last Done");
+            Swal({
+              title: 'Success',
+              text: 'Your Comment sent successfully!',
+              icon: 'success',
+            });
             setSent(!sent); // Toggle the value of sent to trigger the useEffect hook
-            setComment(""); // Clear the comment input field
-            handleCloseDialog();
+            setComment({
+              name: '',
+              comment: '',
+            });
           })
           .catch((error) => {
-            console.error("Error posting comment to /api/a/{id}:", error);
+            Swal({
+              title: 'Error',
+              text: 'There was an error sending Your Comment. Please try again later.',
+              icon: 'error',
+            });
           });
       })
       .catch((error) => {
-        console.error("Error posting comment to /api/comment:", error);
+        Swal({
+          title: 'Error',
+          text: 'There was an error sending Your Comment. Please try again later.',
+          icon: 'error',
+        });
       });
   }
 
@@ -185,8 +208,12 @@ export function Profile() {
                   </div>
                 </div>
                 <div className="mt-10 flex w-full justify-center px-4 lg:order-3 lg:mt-0 lg:w-4/12 lg:justify-end lg:self-center">
-                  <Button className="bg-blue-400">Fill a report</Button>
-                </div>
+                  <>
+                    <Button className="bg-blue-400" onClick={openDialog}>
+                      Fill a report
+                    </Button>
+                    {isDialogOpen && <ReportDialog isOpen={isDialogOpen} onClose={closeDialog} id={id} />}
+                  </>                </div>
                 <div className="w-full px-4 lg:order-1 lg:w-4/12">
                   <div className="flex justify-center py-4 pt-8 lg:pt-4">
                     <div className="mr-4 p-3 text-center">
@@ -284,6 +311,45 @@ export function Profile() {
                     <Comment key={reaction._id} name={reaction.name} description={reaction.comment} />
                   ))}
                 </ul>
+
+
+                <div>
+                  <form onSubmit={handleSubmit}>
+                    <div class="w-full mb-4 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
+                      <div class="px-4 py-2 bg-white rounded-b-lg dark:bg-gray-800">
+                        <label for="editor" class="sr-only">Publish post</label>
+                        <textarea
+                          id="editor"
+                          rows="8"
+                          class="block w-full px-0 text-sm text-gray-800 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
+                          placeholder="Write a comment..."
+                          name="comment"
+                          value={comment.comment}
+                          onChange={handleCommentEnter}
+                          required
+                        ></textarea>
+                        <label for="name" class="sr-only">Publish post</label>
+                        <input
+                          id="name"
+                          class="block w-full px-0 text-sm text-gray-800 bg-white border-0 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400"
+                          placeholder="Enter Your Name"
+                          name="name"
+                          value={comment.name}
+                          onChange={handleCommentEnter}
+                          required
+                        ></input>
+                      </div>
+                    </div>
+                    <button
+                      type="submit"
+                      onClick={handleSubmit}
+                      class="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800"
+                    >
+                      Publish post
+                    </button>
+                  </form>
+                </div>
+
               </div>
 
 
