@@ -6,7 +6,7 @@ import { IconButton } from "@material-tailwind/react";
 import "./style.css";
 import { Option } from "@/widgets/option";
 
-const Feed = ({ totalPages, limit, data }) => {
+const Feed = ({ totalPages, limit, data, id }) => {
   const startTime = data.idDisaster && data.idDisaster.start_time;
   const [showFullDescription, setShowFullDescription] = useState(false);
   const characterLimit = 100;
@@ -78,7 +78,7 @@ const Feed = ({ totalPages, limit, data }) => {
             </div>
           </div>
           <div className="flex justify-end">
-            <Option />
+            <Option id={id} />
           </div>
         </div>
       </motion.section>

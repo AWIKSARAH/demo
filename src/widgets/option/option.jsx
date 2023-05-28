@@ -4,14 +4,17 @@ import React, { useState } from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
 import { Radio, FormControlLabel, TextField } from '@mui/material';
 import { Typography } from "@material-tailwind/react";
-const DropdownMenu = () => {
+import emailjs from "emailjs-com";
+import Swal from "sweetalert"
+
+const DropdownMenu = ({ id }) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [isOpen, setIsModalOpen] = useState(false);
     const [reason, setReason] = useState('');
     const [description, setDescription] = useState('');
     const [contact, setContact] = useState('');
     const [errors, setErrors] = useState({});
-
+    const [name, setName] = useState('');
 
 
     const handleDescriptionChange = (event) => {
@@ -39,7 +42,6 @@ const DropdownMenu = () => {
     };
 
     const handleSubmit = () => {
-        // Validate the form fields
         const validationErrors = {};
         if (!reason) {
             validationErrors.reason = 'Please select a reason';
@@ -51,18 +53,45 @@ const DropdownMenu = () => {
             validationErrors.contact = 'Please provide contact information';
         }
 
-        // Check if there are any validation errors
         if (Object.keys(validationErrors).length === 0) {
             const reportData = {
                 reason,
                 description,
                 contact,
+                id: id
             };
-            onSubmit(reportData);
+            emailjs
+                .send(
+                    "service_msp0n3l",
+                    "template_m2ht6hv",
+                    reportData,
+                    "2gmRRdH9Qw1Wh8IqW"
+                )
+                .then(
+                    (response) => {
+                        // this.setState({ status: response.status });
+                        Swal({
+                            title: 'Success',
+                            text: 'The Report was sent successfully!',
+                            icon: 'success',
+                        });
+                        setIsModalOpen(false)
+                    },
+                    (error) => {
+                        Swal({
+                            title: 'Error',
+                            text: 'There was an error sending the email. Please try again later.',
+                            icon: 'error',
+                        });
+                    }
+                );
         } else {
             setErrors(validationErrors);
         }
     };
+
+
+
     return (
         <div className="relative inline-block">
             <button
@@ -105,6 +134,19 @@ const DropdownMenu = () => {
                 <DialogTitle id="report-dialog-title">Report</DialogTitle>
                 <DialogContent>
                     <form className="space-y-4">
+                        <div>
+                            <Typography variant="subtitle1">Contact Information:</Typography>
+                            <TextField
+                                type="text"
+                                value={name}
+                                onChange={(e) => { setName(e.target.value) }}
+                                variant="outlined"
+                                required
+                                fullWidth
+                                error={!!errors.contact}
+                                helperText={errors.contact}
+                            />
+                        </div>
                         <div>
                             <Typography variant="subtitle1">Reason for Report:</Typography>
                             <FormControlLabel

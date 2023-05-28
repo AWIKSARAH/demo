@@ -12,13 +12,13 @@ import { Footer } from "@/widgets/layout";
 import axios from "axios";
 import Feed from "./feed/feed";
 import Pagination from "@mui/material/Pagination";
-
+import { Loading } from "@/widgets/loading"
 function Profile() {
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [filterType, setFilterType] = useState("");
-
+  const [loading, setLoading] = useState(true);
 
 
 
@@ -37,9 +37,11 @@ function Profile() {
       .then((response) => {
         setData(response.data);
         console.log(response.data);
+        setLoading(false);
       })
       .catch((error) => {
         console.error(error);
+        setLoading(true);
       });
   };
 
@@ -174,7 +176,6 @@ function Profile() {
                       <option value="">All</option>
                       <option value="lost">Lost</option>
                       <option value="find">Find</option>
-                      {/* Add more filter options as needed */}
                     </select>
                   </div>
 
@@ -200,33 +201,43 @@ function Profile() {
 
               <div className="mb-10 border-t border-blue-gray-50 py-6 text-center">
                 <div className="mt-2 flex flex-wrap justify-center">
-                  <div className="flex w-full flex-col items-center px-4 lg:w-10.2/12">
-                    <AnimatePresence>
-                      <div className="feed-grid">
-                        {data &&
-                          data.data &&
-                          data.data.slice(startIndex, endIndex).map((item) => (
-                            <motion.div
-                              key={item._id}
-                              initial={{ opacity: 0, y: 20 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              exit={{ opacity: 0, y: -20 }}
-                              transition={{ duration: 0.3 }}
-                            >
-                              <Feed
-                                data={item}
-                                id={item._id}
-                                totalPages={data.totalPages}
-                                limit={data.limit}
-                              />
-                            </motion.div>
-                          ))}
-
-
+                  <div className="flex w-full flex-col items-center px-4 lg:w-10/12">
+                    {!loading ? (
+                      <AnimatePresence>
+                        <div className="feed-grid">
+                          {data &&
+                            data.data &&
+                            data.data.slice(startIndex, endIndex).map((item) => (
+                              <motion.div
+                                key={item._id}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -20 }}
+                                transition={{ duration: 0.3 }}
+                              >
+                                <Feed
+                                  data={item}
+                                  id={item._id}
+                                  totalPages={data.totalPages}
+                                  limit={data.limit}
+                                />
+                              </motion.div>
+                            ))}
+                        </div>
+                      </AnimatePresence>
+                    ) : (
+                      <div className="flex flex-wrap gap-4">
+                        <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/2">
+                          <Loading />
+                        </div>
+                        <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4">
+                          <Loading />
+                        </div>
                       </div>
 
-                    </AnimatePresence>
+                    )}
                   </div>
+
                 </div>
               </div>
             </div>
