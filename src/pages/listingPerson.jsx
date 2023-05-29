@@ -1,5 +1,5 @@
 import { Avatar, Typography, Button } from "@material-tailwind/react";
-import React, { useState, useEffect, useRef, useContext } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -10,25 +10,41 @@ import {
 } from "@heroicons/react/24/solid";
 import { Footer } from "@/widgets/layout";
 import axios from "axios";
-import Feed from "./feed/feed";
+import Feed from "../widgets/cards/team-card";
 import Pagination from "@mui/material/Pagination";
-import { Loading } from "@/widgets/loading";
-import { DataContext } from "../data/dataContext";
-
+import { Loading } from "@/widgets/loading"
 function Profile() {
-  const { data, loading, fetchData } = useContext(DataContext);
-
+  const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [filterType, setFilterType] = useState("");
+  const [loading, setLoading] = useState(true);
 
-  console.log(data);
+
 
 
   useEffect(() => {
-    fetchData(searchQuery, filterType, currentPage);
-  }, [currentPage, searchQuery, filterType]);
+    fetchData();
+  }, []);
 
+  const fetchData = () => {
+    const query = searchQuery ? `&q=${searchQuery}` : "";
+    const type = filterType ? `&type=${filterType}` : "";
+    const url = `http://localhost:5000/api/person`;
+    // const url = `http://localhost:5000/api/person/?page=${currentPage}${query}${type}`;
+
+    axios
+      .get(url)
+      .then((response) => {
+        setData(response.data.data);
+        console.log(response);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+        setLoading(true);
+      });
+  };
 
   const handlePageChange = (event, page) => {
     setCurrentPage(page);
@@ -191,8 +207,8 @@ function Profile() {
                       <AnimatePresence>
                         <div className="feed-grid">
                           {data &&
-                            data.data &&
-                            data.data.slice(startIndex, endIndex).map((item) => (
+
+                            data.map((item) => (
                               <motion.div
                                 key={item._id}
                                 initial={{ opacity: 0, y: 20 }}
@@ -217,7 +233,7 @@ function Profile() {
                         </div>
                         <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4">
                           <Loading />
-                        </div><div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/2">
+                        </div>  <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/2">
                           <Loading />
                         </div>
                         <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4">

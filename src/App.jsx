@@ -3,9 +3,11 @@ import { Navbar } from "@/widgets/layout";
 import { AnnouncementForm } from "@/widgets/form";
 import routes from "@/routes";
 import Profile from "./pages/profile";
+import { DataProvider } from "./data/dataContext";
+
 function App() {
   return (
-    <>
+    <DataProvider>
       <div className="container absolute left-2/4 z-10 mx-auto -translate-x-2/4 p-4">
         <Navbar routes={routes} />
       </div>
@@ -18,7 +20,7 @@ function App() {
         <Route path="/announcementForm" element={<AnnouncementForm />} />
         <Route path="*" element={<Navigate to="/home" replace />} />
       </Routes>
-    </>
+    </DataProvider>
   );
 }
 
