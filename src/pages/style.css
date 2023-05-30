@@ -3,7 +3,6 @@
     list-style: none;
     height: 120px;
     width: 100%;
-    padding-top: 40px;
     font-family: "Poppins", sans-serif;
     justify-content: center;
   }
@@ -84,4 +83,17 @@
     color: #fff;
   }
   
+  .wrapper .facebook.Male:hover,
+  .wrapper .facebook.Male:hover .tooltip,
+  .wrapper .facebook.Male:hover .tooltip::before {
+    background: blue;
+    color: white;
+  }
+  
+  .wrapper .facebook.Female:hover,
+  .wrapper .facebook.Female:hover .tooltip,
+  .wrapper .facebook.Female:hover .tooltip::before {
+    background: rgb(255, 106, 180);
+    color: white;
+  }
   

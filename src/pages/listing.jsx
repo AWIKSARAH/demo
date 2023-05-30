@@ -44,9 +44,7 @@ function Profile() {
     setCurrentPage(1);
   };
 
-  const itemsPerPage = 2;
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
+
 
   return (
     <>
@@ -192,7 +190,7 @@ function Profile() {
                         <div className="feed-grid">
                           {data &&
                             data.data &&
-                            data.data.slice(startIndex, endIndex).map((item) => (
+                            data.data.map((item) => (
                               <motion.div
                                 key={item._id}
                                 initial={{ opacity: 0, y: 20 }}
@@ -238,6 +236,7 @@ function Profile() {
         <Footer />
       </div>
     </>
+    // <h1>huhuhuh</h1>
   );
 }
 

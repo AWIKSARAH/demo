@@ -30,7 +30,7 @@ export function Home() {
               <Typography variant="lead" color="white" className="opacity-80">
                 FindLost is an innovative platform that leverages AI technology to aid in the search and rescue efforts during and after disasters. Join us in our mission to reunite families and save lives.
               </Typography>
-              <div className="flex space-x-1 mt-4">
+              {/* <div className="flex space-x-1 mt-4">
                 <input
                   type="text"
                   className="block w-full px-4 py-2 text-blue-700 bg-white border rounded-full focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
@@ -52,7 +52,7 @@ export function Home() {
                     />
                   </svg>
                 </button>
-              </div>
+              </div> */}
             </div>
 
           </div>
@@ -116,34 +116,7 @@ export function Home() {
 
         </div>
       </section>
-      <section className="px-4 pt-20 pb-48">
-        <div className="container mx-auto">
-          <PageTitle heading="Here are our heroes">
-            According to the National Oceanic and Atmospheric Administration,
-            Ted, Scambos, NSIDClead scentist, puts the potentially record
-            maximum.
-          </PageTitle>
-          <div className="mt-24 grid grid-cols-1 gap-12 gap-x-24 md:grid-cols-2 xl:grid-cols-4">
-            {teamData.map(({ img, name, position, socials }) => (
-              <TeamCard
-                key={name}
-                img={img}
-                name={name}
-                position={position}
-                socials={
-                  <div className="flex items-center gap-2">
-                    {socials.map(({ color, name }) => (
-                      <IconButton key={name} color={color} variant="text">
-                        <i className={`fa-brands text-lg fa-${name}`} />
-                      </IconButton>
-                    ))}
-                  </div>
-                }
-              />
-            ))}
-          </div>
-        </div>
-      </section>
+
       <section className="relative bg-blue-gray-50/50 py-24 px-4">
         <div className="container mx-auto">
           <PageTitle heading="FindLost">

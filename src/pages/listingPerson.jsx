@@ -1,5 +1,5 @@
 import { Avatar, Typography, Button } from "@material-tailwind/react";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -12,39 +12,26 @@ import { Footer } from "@/widgets/layout";
 import axios from "axios";
 import Feed from "../widgets/cards/team-card";
 import Pagination from "@mui/material/Pagination";
-import { Loading } from "@/widgets/loading"
+import { Loading } from "@/widgets/loading";
+import { DataContext } from "../data/dataContext";
+// import { eyesEnum, colorSkinEnum, colorHairEnum, genderEnum, foundEnum } from "../data/enumData";
 function Profile() {
-  const [data, setData] = useState([]);
+  const { persons, loading, fetchPerson } = useContext(DataContext);
+
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [filterType, setFilterType] = useState("");
-  const [loading, setLoading] = useState(true);
 
 
+
+  console.log(persons);
 
 
   useEffect(() => {
-    fetchData();
-  }, []);
 
-  const fetchData = () => {
-    const query = searchQuery ? `&q=${searchQuery}` : "";
-    const type = filterType ? `&type=${filterType}` : "";
-    const url = `http://localhost:5000/api/person`;
-    // const url = `http://localhost:5000/api/person/?page=${currentPage}${query}${type}`;
+    fetchPerson(searchQuery, filterType, currentPage);
+  }, [searchQuery, filterType, currentPage]);
 
-    axios
-      .get(url)
-      .then((response) => {
-        setData(response.data.data);
-        console.log(response);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error(error);
-        setLoading(true);
-      });
-  };
 
   const handlePageChange = (event, page) => {
     setCurrentPage(page);
@@ -59,10 +46,6 @@ function Profile() {
     setFilterType(event.target.value);
     setCurrentPage(1);
   };
-
-  const itemsPerPage = 2;
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
 
   return (
     <>
@@ -90,7 +73,7 @@ function Profile() {
                 <div className="w-full px-4 lg:order-1 lg:w-4/12">
                   <div className="flex justify-center py-4">
                     <div className="mr-4 p-3 text-center"
-                      onClick={() => { setFilterType('find') }}
+                      onClick={() => { setFilterType('found') }}
 
                     >
                       <Typography
@@ -98,18 +81,18 @@ function Profile() {
                         color="textSecondary"
                         className="font-bold uppercase"
                       >
-                        {data.foundCount}
+                        {persons.foundCount ? persons.foundCount : "Loading"}
                       </Typography>
                       <Typography
                         variant="caption"
                         color="textSecondary"
                         className="font-normal text-blue-gray-500"
                       >
-                        Found People
+                        Found
                       </Typography>
                     </div>
                     <div className="mr-4 p-3 text-center"
-                      onClick={() => { setFilterType('lost') }}
+                      onClick={() => { setFilterType('Lost') }}
 
                     >
                       <Typography
@@ -117,7 +100,8 @@ function Profile() {
                         color="textSecondary"
                         className="font-bold uppercase"
                       >
-                        {data.lostCount}
+                        {persons.lostCount ? persons.lostCount : "Loading"}
+
                       </Typography>
                       <Typography
                         variant="caption"
@@ -125,7 +109,7 @@ function Profile() {
                         className="font-normal text-blue-gray-500"
 
                       >
-                        Lost People
+                        Lost
                       </Typography>
                     </div>
                     <div className="p-3 text-center lg:mr-4"
@@ -138,7 +122,7 @@ function Profile() {
                         className="font-bold uppercase"
 
                       >
-                        {data.total}
+                        {persons.lostCount && persons.foundCount ? persons.lostCount + persons.foundCount : "Loading"}
                       </Typography>
                       <Typography
                         variant="caption"
@@ -153,9 +137,9 @@ function Profile() {
               </div>
               <div className="my-8 text-center">
                 <Typography variant="h2" color="textPrimary" className="mb-2">
-                  Announcement
+                  People Arround the Word
                 </Typography>
-                <div className="my-8 flex justify-center space-x-4 ">
+                <div className="my-8 flex flex-col md:flex-row justify-center  items-center space-y-4 md:space-y-0 md:space-x-4">
                   <div className="filter-icon-container">
                     <FunnelIcon className="filter-icon sm:h-4 md:h-5 lg:h-8 xl:h-9" />
                   </div>
@@ -163,7 +147,6 @@ function Profile() {
                     <input
                       type="text"
                       placeholder="Search..."
-                      value={searchQuery}
                       onChange={handleSearch}
                       className="border border-blue-900 rounded px-5 py-2 bg-white-100 text-gray-700"
                     />
@@ -171,21 +154,58 @@ function Profile() {
                   <div className="filter-container">
                     <select
                       value={filterType}
-                      onChange={handleFilterType}
-                      className="border border-blue-900 rounded px-5 py-2 bg-white-100 text-gray-700"
+                      name="eyes"
+                      onChange={handleSearch}
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-900"
                     >
-                      <option value="">All</option>
-                      <option value="lost">Lost</option>
-                      <option value="find">Find</option>
+                      <option value="">Eyes</option>
+                      <option value="">-----</option>
+                      <option value="Black">Black</option>
+                      <option value="Blue">Blue</option>
+                      <option value="Brown">Brown</option>
+                      <option value="Hazel">Hazel</option>
+                    </select>
+                  </div>
+                  <div className="filter-container">
+                    <select
+                      value={filterType}
+                      onChange={handleFilterType}
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-900"
+                    >
+                      <option value="">Situation</option>
+                      <option value="Lost">Lost</option>
+                      <option value="found">Found</option>
+                    </select>
+                  </div>
+                  <div className="filter-container">
+                    <select
+                      value={filterType}
+                      onChange={handleSearch}
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-900"
+                    >
+                      <option value="">Skin</option>
+                      <option value="">----</option>
+                      <option value="Fair">Fair</option>
+                      <option value="Medium">Medium</option>
+                      <option value="Dark">Dark</option>
                     </select>
                   </div>
 
-                  <div className="">
-                    <Pagination
-                      count={data.totalPages}
-                      page={currentPage}
-                      onChange={handlePageChange}
-                    />
+                  <div className="filter-container">
+                    <select
+                      value={filterType}
+                      onChange={handleSearch}
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-900"
+                    >
+                      <option value="">Gender</option>
+                      <option value="">----</option>
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+                  <div className="flex justify-center">
+                    <Pagination color="primary" count={persons.totalPages} page={currentPage} onChange={handlePageChange} />
                   </div>
                 </div>
               </div>
@@ -206,9 +226,8 @@ function Profile() {
                     {!loading ? (
                       <AnimatePresence>
                         <div className="feed-grid">
-                          {data &&
-
-                            data.map((item) => (
+                          {persons && persons.data ? (
+                            persons.data.map((item) => (
                               <motion.div
                                 key={item._id}
                                 initial={{ opacity: 0, y: 20 }}
@@ -216,14 +235,29 @@ function Profile() {
                                 exit={{ opacity: 0, y: -20 }}
                                 transition={{ duration: 0.3 }}
                               >
+                                {/* <Link to={`a/`}> */}
                                 <Feed
                                   data={item}
                                   id={item._id}
-                                  totalPages={data.totalPages}
-                                  limit={data.limit}
+                                  totalPages={persons.totalPages}
+                                  limit={persons.limit}
                                 />
+                                {/* </Link> */}
                               </motion.div>
-                            ))}
+
+                            ))
+
+                          ) : (
+                            <h1>{persons && persons.message}</h1>
+                          )}
+                        </div>
+                        <div className="flex justify-center">
+                          <Pagination
+                            count={persons.totalPages}
+                            page={currentPage}
+                            color="primary"
+                            onChange={handlePageChange}
+                          />
                         </div>
                       </AnimatePresence>
                     ) : (
@@ -233,7 +267,7 @@ function Profile() {
                         </div>
                         <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4">
                           <Loading />
-                        </div>  <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/2">
+                        </div><div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/2">
                           <Loading />
                         </div>
                         <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4">

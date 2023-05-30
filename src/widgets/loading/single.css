@@ -1,0 +1,49 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    width: fit-content;
+  }
+  
+  .container .title {
+    font-size: 1em;
+    color: #283149;
+    text-align: center;
+  }
+  
+  .folder {
+    display: flex;
+    flex-direction: column;
+    animation: float 2s infinite linear;
+  }
+  
+  .folder .top {
+    background-color: #FF8F56;
+    width: 75px;
+    height: 15px;
+    border-top-right-radius: 10px;
+  }
+  
+  .folder .bottom {
+    background-color: #FFCE63;
+    width: 150px;
+    height: 100px;
+    box-shadow: 8px 8px 0 0 #283149;
+    border-top-right-radius: 8px;
+  }
+  
+  @keyframes float {
+    0% {
+      transform: translatey(0px);
+    }
+  
+    50% {
+      transform: translatey(-25px);
+    }
+  
+    100% {
+      transform: translatey(0px);
+    }
+  }
+  
+  

@@ -7,6 +7,7 @@ const DataContext = createContext();
 // Create the context provider component
 const DataProvider = ({ children }) => {
   const [data, setData] = useState([]);
+  const [persons, setPersons] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const fetchData = (searchQuery, filterType, currentPage) => {
@@ -28,9 +29,28 @@ const DataProvider = ({ children }) => {
         setLoading(true);
       });
   };
+  const fetchPerson = (searchQuery, filterType, currentPage) => {
+    const query = searchQuery ? `&q=${searchQuery}` : "";
+    const type = filterType ? `&found=${filterType}` : "";
+    const url = `http://localhost:5000/api/person/?page=${currentPage}${query}${type}`;
+    setLoading(true);
+    console.log({ "searchQuery": searchQuery, "filterType": filterType, "currentPage": currentPage });
+    axios
+      .get(url)
+      .then((response) => {
+        setPersons(response.data);
+        setLoading(false);
+        console.log(response);
+      })
+      .catch((error) => {
+        console.error(error);
+        setLoading(false);
+      });
+  };
+
 
   return (
-    <DataContext.Provider value={{ data, loading, fetchData }}>
+    <DataContext.Provider value={{ data, loading, fetchData, fetchPerson, persons }}>
       {children}
     </DataContext.Provider>
   )

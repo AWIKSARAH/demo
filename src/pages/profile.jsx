@@ -7,6 +7,8 @@ import {
 
 } from "@heroicons/react/24/solid";
 import { Footer } from "@/widgets/layout";
+import TimeAgo from "react-timeago";
+import Loading from '../widgets/loading/single'
 import { useParams } from "react-router-dom";
 import Details from '@/data/announcementDetails';
 import Comment from './feed/comment'
@@ -48,7 +50,6 @@ export function Profile() {
         setData(response.data.data);
         setUrl(`http://localhost:5000${response.data.data.idPerson.image}`)
         setIsLoading(false); // Set isLoading to false when data is fetched
-        console.log(response.data.data.idDisaster);
       } catch (error) {
         console.error(error);
       }
@@ -163,6 +164,8 @@ export function Profile() {
             });
           })
           .catch((error) => {
+            console.log(error);
+
             Swal({
               title: 'Error',
               text: 'There was an error sending Your Comment. Please try again later.',
@@ -171,17 +174,22 @@ export function Profile() {
           });
       })
       .catch((error) => {
+        console.log(error);
         Swal({
           title: 'Error',
-          text: 'There was an error sending Your Comment. Please try again later.',
+          text: error.response.data.error,
           icon: 'error',
         });
       });
   }
-
   if (isLoading) {
-    return <div>Loading...</div>; // Render a loading state while data is being fetched
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Loading />
+      </div>
+    );
   }
+
   return (
     <>
       <section className="relative block h-[50vh]">
@@ -272,9 +280,15 @@ export function Profile() {
               <div className="my-8 text-center">
                 <Typography variant="h2" color="blue-gray" className="mb-2">
                   {data.title}
-                </Typography> <Typography variant="h3" color="orange" className="mb-2">
+                </Typography>
+                <Typography variant="h3" color="orange" className="mb-2">
                   {data.idPerson.name}
                 </Typography>
+
+                <Typography variant="h6" color="gray" className="mb-1">
+                  <TimeAgo date={data.idDisaster?.start_time || ""} />
+                </Typography>
+
                 <div className="mb-16 flex items-center justify-center gap-2">
                   <MapPinIcon className="-mt-px h-4 w-4 text-blue-gray-700" />
                   <Typography className="font-medium text-blue-gray-700">
@@ -317,27 +331,28 @@ export function Profile() {
                   <form onSubmit={handleSubmit}>
                     <div class="w-full mb-4 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
                       <div class="px-4 py-2 bg-white rounded-b-lg dark:bg-gray-800">
-                        <label for="editor" class="sr-only">Publish post</label>
+                        <label htmlFor="editor" className="sr-only">Publish post</label>
                         <textarea
                           id="editor"
                           rows="8"
-                          class="block w-full px-0 text-sm text-gray-800 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
+                          className="block w-full px-0 text-sm text-gray-800 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
                           placeholder="Write a comment..."
                           name="comment"
-                          value={comment.comment}
+                          defaultValue={comment.comment}
                           onChange={handleCommentEnter}
                           required
                         ></textarea>
-                        <label for="name" class="sr-only">Publish post</label>
+                        <label htmlFor="name" className="sr-only">Publish post</label>
                         <input
                           id="name"
-                          class="block w-full px-0 text-sm text-gray-800 bg-white border-0 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400"
+                          className="block w-full px-0 text-sm text-gray-800 bg-white border-0 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400"
                           placeholder="Enter Your Name"
                           name="name"
-                          value={comment.name}
+                          defaultValue={comment.name}
                           onChange={handleCommentEnter}
                           required
-                        ></input>
+                        />
+
                       </div>
                     </div>
                     <button
@@ -357,6 +372,7 @@ export function Profile() {
 
             </div>
           </div>
+
         </div>
       </section>
       <div className="bg-blue-gray-50/50">

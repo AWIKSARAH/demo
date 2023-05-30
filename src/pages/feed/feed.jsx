@@ -28,7 +28,7 @@ const Feed = ({ totalPages, limit, data, id }) => {
           <motion.div
             className="article__img"
             style={{
-              backgroundImage: `url(http://localhost:5000${data.idPerson.image})`,
+              // backgroundImage: `url(http://localhost:5000${data.idPerson.image}) || url(../../../public/logo.png)`,
             }}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -52,7 +52,7 @@ const Feed = ({ totalPages, limit, data, id }) => {
                   <h3 className="user__name">{data.idPerson.name}</h3>
                   <p className="user__date text-gray-500">
                     {data.idDisaster && (
-                      <TimeAgo date={data.idDisaster.start_time} />
+                      <TimeAgo date={data.idDisaster.start_time || ""} />
                     )}
                   </p>
                 </div>

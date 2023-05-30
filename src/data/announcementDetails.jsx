@@ -115,31 +115,31 @@ const InformationTable = ({ data }) => {
                             <TableBody>
                                 <TableRow>
                                     <TableCell>Disaster Type</TableCell>
-                                    <TableCell>{data.idDisaster.type}</TableCell>
+                                    <TableCell>{data.idDisaster?.type}</TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell>Disaster Location</TableCell>
-                                    <TableCell>{data.idDisaster.location}</TableCell>
+                                    <TableCell>{data.idDisaster?.location}</TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell>Disaster Latitude</TableCell>
-                                    <TableCell>{data.idDisaster.latitude}</TableCell>
+                                    <TableCell>{data.idDisaster?.latitude}</TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell>Disaster Longitude</TableCell>
-                                    <TableCell>{data.idDisaster.longitude}</TableCell>
+                                    <TableCell>{data.idDisaster?.longitude}</TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell>Disaster Start Time</TableCell>
-                                    <TableCell>{data.idDisaster.start_time}</TableCell>
+                                    <TableCell>{data.idDisaster?.start_time}</TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell>Disaster End Time</TableCell>
-                                    <TableCell>{data.idDisaster.end_time}</TableCell>
+                                    <TableCell>{data.idDisaster?.end_time}</TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell>Disaster Status</TableCell>
-                                    <TableCell>{data.idDisaster.status}</TableCell>
+                                    <TableCell>{data.idDisaster?.status}</TableCell>
                                 </TableRow>
                             </TableBody>
                         </Table>

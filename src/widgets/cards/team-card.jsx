@@ -1,59 +1,50 @@
-import PropTypes from "prop-types";
-import {
-  Card, Avatar, Typography,
-  IconButton,
-} from "@material-tailwind/react";
-import { Female } from "@mui/icons-material";
+import { Link } from "react-router-dom";
+import TimeAgo from "react-timeago";
 import '../../pages/style.css';
 export function TeamCard({ img, data, position, socials }) {
-  console.log(data);
+  console.log(data.disasterIds[0]);
   return (
-    <Card color="transparent" shadow={false} className="text-center">
-      <Avatar
-        src={`http://localhost:5000${data.image}`}
-        alt={data.name}
-        size="xxl"
-        className="h-full w-full shadow-lg shadow-gray-500/25"
-      />
-      <Typography variant="h5" color="blue-gray" className="mt-6 mb-1">
-        {data.name}
-      </Typography>
-      {!data.found && (
-        <Typography className="font-normal text-blue-gray-500">
-          Lost
-        </Typography>
+    <div className="max-w-lg mx-auto my-10 bg-white rounded-lg shadow-md p-5">
+      {typeof data.disasterIds[0] === 'undefined' ? (
+
+        <img
+          className="w-32 h-32 rounded-full mx-auto"
+          src={data.image ? `http://localhost:5000${data.image}` : '../../../public/img/logo.png'}
+          alt="Profile picture"
+        />
+      ) : (
+        <Link to={`/a/${data.disasterIds[0]}`}>
+          <img
+            className="w-32 h-32 rounded-full mx-auto"
+            src={data.image ? `http://localhost:5000${data.image}` : '../../../public/img/logo.png'}
+            alt="Profile picture"
+          />
+        </Link>
       )}
-      <div className="mx-auto mt-5">
 
+
+      <h2 className="text-center text-2xl font-semibold mt-3"> {data.name}</h2>
+      <p className="text-center text-gray-600 mt-1">{data.found}</p>
+      <div className="flex justify-center mt-5">
+        <a className="text-blue-500 hover:text-blue-700 mx-3">Color Eyes<p className="text-center text-gray-600 font-bold mt-1" style={{ fontSize: "10px" }}>{data.eyes ? data.eyes : "loading"}</p></a>
+        <a className="text-blue-500 hover:text-blue-700 mx-3">Color Skin<p className="text-center text-gray-600 font-bold mt-1" style={{ fontSize: "10px" }}>{data.colorSkin ? data.colorSkin : "loading"}</p></a>
+        <a className="text-blue-500 hover:text-blue-700 mx-3">Color Hair<p className="text-center text-gray-600 font-bold mt-1" style={{ fontSize: "10px" }}>{data.colorHair ? data.colorHair : "loading"}</p></a>
+
+      </div>
+      <div className="mt-5">
+        <h3 className="text-xl font-semibold">          <TimeAgo date={data.dob || ""} />
+        </h3>
+        <p className="text-gray-600 mt-2"> {data.description} </p>
         <div className="flex items-center gap-2">
-
-          <IconButton color={data.colorSkin === Female ? 'pink' : 'blue'} variant="text">
-            <i class="fa-solid text-lg fa-person-half-dress"></i>
-          </IconButton>
           <ul class="wrapper">
-
-            <li class="icon facebook">
-              <span class="tooltip">Facebook</span>
-              <span><i class="fab fa-facebook-f"></i></span>
-            </li>
-            <li class="icon twitter">
-              <span class="tooltip">{data.gender}</span>
-              <span><IconButton color='blue' variant="text">
-                <i class="fa-solid  text-lg fa-location-dot fa-2xs"></i>
-              </IconButton></span>
-            </li>
-            <li class="icon instagram">
-              <span class="tooltip">Instagram</span>
-              <span><i class="fab fa-instagram"></i></span>
+            <li className={`icon facebook ${data.gender === 'Male' ? 'Male' : 'Female'}`}>
+              <span className="tooltip">{data.gender}</span>
+              <span><i className="fa-solid text-lg fa-person-half-dress"></i></span>
             </li>
           </ul>
         </div>
-        <div className="flex items-center gap-2">
-
-        </div>
       </div>
-
-    </Card>
+    </div>
   );
 }
 

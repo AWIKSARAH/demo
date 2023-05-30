@@ -26,12 +26,12 @@ export const routes = [
     path: "/announcements",
     element: <Listing />,
   },
-  {
-    icon: NewspaperIcon,
-    name: "Feeds",
-    path: "/feeds",
-    element: <SignUp />,
-  },
+  // {
+  //   icon: NewspaperIcon,
+  //   name: "Feeds",
+  //   path: "/feeds",
+  //   element: <SignUp />,
+  // },
   {
     icon: WifiIcon,
     name: "Social Media",
