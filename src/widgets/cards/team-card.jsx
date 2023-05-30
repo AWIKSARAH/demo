@@ -1,10 +1,15 @@
 import { Link } from "react-router-dom";
 import TimeAgo from "react-timeago";
 import '../../pages/style.css';
+import { Option } from "@/widgets/option";
+
 export function TeamCard({ img, data, position, socials }) {
   console.log(data.disasterIds[0]);
   return (
     <div className="max-w-lg mx-auto my-10 bg-white rounded-lg shadow-md p-5">
+      <div className="flex justify-end">
+        <Option id={data._id} />
+      </div>
       {typeof data.disasterIds[0] === 'undefined' ? (
 
         <img
