@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Card,
   CardBody,
@@ -13,9 +13,48 @@ import { UsersIcon } from "@heroicons/react/24/solid";
 import { PageTitle, Footer } from "@/widgets/layout";
 import { FeatureCard, TeamCard } from "@/widgets/cards";
 import { featuresData, teamData, contactData } from "@/data";
-// import { StarIcon } from '@heroicons/react/solid';
+import Swal from "sweetalert";
+import emailjs from "emailjs-com";
 
 export function Home() {
+  const [contact, setContact] = useState([]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setContact((previous) => ({
+      ...previous,
+      [name]: value
+    }));
+  };
+
+
+  const handleSubmit = () => {
+    emailjs
+      .send(
+        "service_msp0n3l",
+        "template_jfdfv1e",
+        contact,
+        "2gmRRdH9Qw1Wh8IqW"
+      )
+      .then(
+        (response) => {
+          Swal({
+            title: 'Success',
+            text: 'The Report was sent successfully!',
+            icon: 'success',
+          });
+          setContact("");
+        },
+        (error) => {
+          Swal({
+            title: 'Error',
+            text: 'There was an error sending the email. Please try again later.' + error.message,
+            icon: 'error',
+          });
+        }
+      );
+
+  };
   return (
     <>
       <div className="relative flex h-screen content-center items-center justify-center pt-16 pb-32">
@@ -30,29 +69,7 @@ export function Home() {
               <Typography variant="lead" color="white" className="opacity-80">
                 FindLost is an innovative platform that leverages AI technology to aid in the search and rescue efforts during and after disasters. Join us in our mission to reunite families and save lives.
               </Typography>
-              {/* <div className="flex space-x-1 mt-4">
-                <input
-                  type="text"
-                  className="block w-full px-4 py-2 text-blue-700 bg-white border rounded-full focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                  placeholder="Search..."
-                />
-                <button className="px-4 text-white bg-blue-600 rounded-full">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-5 h-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                    />
-                  </svg>
-                </button>
-              </div> */}
+
             </div>
 
           </div>
@@ -148,16 +165,16 @@ export function Home() {
           <PageTitle heading="Want to ask us?">
             Complete this form and we will get back to you in 24 hours.
           </PageTitle>
-          <form className="mx-auto mt-12 max-w-3xl text-center">
+          <div className="mx-auto mt-12 max-w-3xl text-center">
             <div className="mb-8 flex gap-8">
-              <Input variant="standard" size="lg" label="Full Name" />
-              <Input variant="standard" size="lg" label="Email Address" />
+              <Input variant="standard" size="lg" name="name" onChange={handleChange} label="Full Name" />
+              <Input variant="standard" size="lg" name="email" onChange={handleChange} label="Email Address" />
             </div>
-            <Textarea variant="standard" size="lg" label="Message" rows={8} />
-            <Button variant="gradient" size="lg" className="mt-8">
+            <Textarea variant="standard" size="lg" name="message" label="Message" onChange={handleChange} rows={8} />
+            <Button variant="gradient" size="lg" className="mt-8" onClick={handleSubmit}>
               Send Message
             </Button>
-          </form>
+          </div>
         </div>
       </section>
       <div className="bg-blue-gray-50/50">

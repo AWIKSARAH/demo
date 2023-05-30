@@ -18,10 +18,9 @@ import {
     Button,
     Typography,
 } from "@material-tailwind/react";
-import { PhotoIcon, UserCircleIcon } from '@heroicons/react/24/solid'
+import { PhotoIcon } from '@heroicons/react/24/solid'
 import ReactFlagsSelect from 'react-flags-select';
-// import 'react-flags-select/css/react-flags-select.css';
-
+import swal from "sweetalert";
 function AnnouncementForm() {
     const [formValues, setFormValues] = useState({});
     const [step, setStep] = useState(1);
@@ -47,6 +46,7 @@ function AnnouncementForm() {
                             <div class="mt-2">
                                 <div class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                                     <input
+                                        required
                                         onChange={handleChange}
                                         type="text"
                                         name="title"
@@ -532,7 +532,8 @@ function AnnouncementForm() {
     };
 
 
-    const postPerson = () => {
+    const postPerson = (e) => {
+        e.preventDefault();
         const url = 'http://localhost:5000/api/person';
         const url_announmcemt = 'http://localhost:5000/api/a/';
         const dataToSend = new FormData();
@@ -580,21 +581,26 @@ function AnnouncementForm() {
         if (formData.person) {
             dataToSend.append('person', formData.person);
         }
-        console.log(dataToSend);
-        console.log(formValues);
+
         axios
             .post(url, dataToSend)
             .then((response) => {
                 const idPerson = response.data.data._id;
-                console.log(idPerson);
-                setFormValues((v) => ({ ...v, idPerson: idPerson, "country": selectedCountry }))
-                console.log(formValues);
-                console.log(formData);
+                setFormValues((v) => ({ ...v, idPerson: idPerson, country: selectedCountry }))
                 axios.post(url_announmcemt, formValues).then((response) => { console.log(response); }).catch((error) => { console.log(error) })
+                swal({
+                    title: 'Success',
+                    text: 'The Form was sent successfully! as soon as possible We Will send you a reminder email',
+                    icon: 'success',
+                });
             })
             .catch((error) => {
-                alert(error.message);
                 console.log(error);
+                swal({
+                    title: 'Error',
+                    text: 'There was an error sending the email. Please try again later.' + error.message,
+                    icon: 'error',
+                });
             });
     };
 
@@ -608,7 +614,7 @@ function AnnouncementForm() {
     };
 
     return (
-        <>
+        <form onSubmit={postPerson}>
             <section className="relative block h-[50vh]">
                 <div className="bg-profile-background absolute top-0 h-full w-full bg-[url('../../public/img/bg.jpeg')] bg-cover bg-no-repeat bg-center flex items-center justify-center text-white text-4xl font-bold" style={CustomStyle}>
                     <span className="font-serif">Embrace hope, take courageous steps forward </span>
@@ -648,14 +654,7 @@ function AnnouncementForm() {
                                     </div>
                                 </div>
                             </div>
-                            {/* hhhhhhhhhhhhhhhhhh */}
-                            {/* <div class="sm:col-span-4">
-                                <div className=" flex flex-wrap justify-center flex-col" >
 
-
-
-                                </div>
-                            </div> */}
                             <div className="mb-10 border-t border-blue-gray-50 py-6 ">
                                 <div className="mt-2 flex flex-wrap justify-center">
                                     {renderForm()}
@@ -663,6 +662,7 @@ function AnnouncementForm() {
                                 <div class="mt-12 flex justify-between">
                                     {step > 1 && (
                                         <button
+                                            type="button"
 
                                             class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out"
 
@@ -670,12 +670,15 @@ function AnnouncementForm() {
                                     )}
                                     {step < 3 && (
                                         <button
+                                            type="button"
+
                                             class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out"
 
                                             onClick={handleNext}>Next</button>
                                     )}
                                     <button
-                                        type="submit"
+                                        type="button"
+
                                         onClick={handleGoBack}
                                         class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out"
                                     >
@@ -683,7 +686,7 @@ function AnnouncementForm() {
                                     </button>
                                     {step === 3 && (
                                         <button
-                                            type="submit"
+                                            type="button"
                                             onClick={postPerson}
                                             class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out"
                                         >
@@ -698,114 +701,10 @@ function AnnouncementForm() {
                 </div >
             </section >
 
-        </>
+        </form>
     );
 };
 
 export default AnnouncementForm;
-
-
-
-// <div class="border-b border-gray-900/10 pb-12">
-// <h2 class="text-base font-semibold leading-7 text-gray-900">Personal Information</h2>
-// <p class="mt-1 text-sm leading-6 text-gray-600">Provide your personal details.</p>
-
-// <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-//     <div class="sm:col-span-3">
-//         <label for="first-name" class="block text-sm font-medium leading-6 text-gray-900">
-//             First Name
-//         </label>
-//         <div class="mt-2">
-//             <input
-//                 type="text"
-//                 name="first-name"
-//                 id="first-name"
-//                 autocomplete="given-name"
-//                 class="block w-full rounded-md border-gray-300 shadow-sm py-1.5 px-1 text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
-//                 placeholder="Jane"
-//             />
-//         </div>
-//     </div>
-
-//     <div class="sm:col-span-3">
-//         <label for="last-name" class="block text-sm font-medium leading-6 text-gray-900">
-//             Last Name
-//         </label>
-//         <div class="mt-2">
-//             <input
-//                 type="text"
-//                 name="last-name"
-//                 id="last-name"
-//                 autocomplete="family-name"
-//                 class="block w-full rounded-md border-gray-300 shadow-sm py-1.5 px-1 text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
-//                 placeholder="Smith"
-//             />
-//         </div>
-//     </div>
-
-//     <div class="sm:col-span-4">
-//         <label for="email" class="block text-sm font-medium leading-6 text-gray-900">
-//             Email address
-//         </label>
-//         <div class="mt-2">
-//             <input
-//                 id="email"
-//                 type="email"
-//                 name="email"
-//                 autocomplete="email"
-//                 class="block w-full rounded-md border-gray-300 shadow-sm py-1.5 px-1 text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
-//                 placeholder="jane.smith@example.com"
-//             />
-//         </div>
-//     </div>
-// </div>
-// </div>
-
-// <div>
-// <h2 class="text-base font-semibold leading-7 text-gray-900">Notification Preferences</h2>
-// <p class="mt-1 text-sm leading-6 text-gray-600">
-//     Choose how you want to be notified description updates and offers.
-// </p>
-
-// <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-//     <div class="col-span-full">
-//         <label for="email-notifications" class="flex items-start">
-//             <div class="flex items-center h-5">
-//                 <input
-//                     id="email-notifications"
-//                     type="checkbox"
-//                     class="focus:ring-indigo-600 h-4 w-4 text-indigo-600 border-gray-300 rounded"
-//                 />
-//             </div>
-//             <div class="ml-3 text-sm leading-5">
-//                 <span class="font-medium text-gray-900">Email notifications</span>
-//                 <p class="text-gray-600">
-//                     Receive email notifications regarding new features, updates, and offers.
-//                 </p>
-//             </div>
-//         </label>
-//     </div>
-
-//     <div class="col-span-full">
-//         <label for="push-notifications" class="flex items-start">
-//             <div class="flex items-center h-5">
-//                 <input
-//                     id="push-notifications"
-//                     type="checkbox"
-//                     class="focus:ring-indigo-600 h-4 w-4 text-indigo-600 border-gray-300 rounded"
-//                 />
-//             </div>
-//             <div class="ml-3 text-sm leading-5">
-//                 <span class="font-medium text-gray-900">Push notifications</span>
-//                 <p class="text-gray-600">
-//                     Receive push notifications on your mobile device regarding new features, updates, and offers.
-//                 </p>
-//             </div>
-//         </label>
-//     </div>
-// </div>
-// </div>
-
-
 
 

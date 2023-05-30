@@ -5,6 +5,7 @@ import TimeAgo from "react-timeago";
 import { IconButton } from "@material-tailwind/react";
 import "./style.css";
 import { Option } from "@/widgets/option";
+import { Typography } from "@material-tailwind/react";
 
 const Feed = ({ totalPages, limit, data, id }) => {
   const startTime = data.idDisaster && data.idDisaster.start_time;
@@ -25,20 +26,34 @@ const Feed = ({ totalPages, limit, data, id }) => {
         transition={{ duration: 0.5 }}
       >
         <div className="article-component">
+
           <motion.div
-            className="article__img"
+            className="article__img flex justify-start content-between flex-row items-start"
             style={{
-              // backgroundImage: `url(http://localhost:5000${data.idPerson.image}) || url(../../../public/logo.png)`,
+              backgroundImage: `url(http://localhost:5000${data.idPerson?.image}) `,
             }}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
+            <Typography
+              variant="lead"
+              className="mx-4 py-2"
+            >
 
+              <span
+                className={`inline-block py-2 px-4 rounded-full uppercase text-xs font-bold ${data.type === "lost" ? "bg-orange-500 text-white" : "bg-blue-500 text-white"
+                  }`}
+              >
+                {data.type}
+              </span>
+
+            </Typography>
           </motion.div>
 
           <div className="article__content">
             <div className="article__header">
               <h2 className="article__title">{data.title}</h2>
+
 
             </div>
             <p className="article__desc">
@@ -49,10 +64,10 @@ const Feed = ({ totalPages, limit, data, id }) => {
             <div className="article__user">
               <div className="user__info">
                 <div className="user__details">
-                  <h3 className="user__name">{data.idPerson.name}</h3>
+                  <h3 className="user__name">{data.idPerson?.name}</h3>
                   <p className="user__date text-gray-500">
                     {data.idDisaster && (
-                      <TimeAgo date={data.idDisaster.start_time || ""} />
+                      <TimeAgo date={data.idDisaster?.start_time || ""} />
                     )}
                   </p>
                 </div>

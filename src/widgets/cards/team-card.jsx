@@ -9,6 +9,8 @@ export function TeamCard({ img, data, position, socials }) {
     <div className="max-w-lg mx-auto my-10 bg-white rounded-lg shadow-md p-5">
       <div className="flex justify-end">
         <Option id={data._id} />
+
+
       </div>
       {typeof data.disasterIds[0] === 'undefined' ? (
 

@@ -293,8 +293,14 @@ export function Profile() {
                   <MapPinIcon className="-mt-px h-4 w-4 text-blue-gray-700" />
                   <Typography className="font-medium text-blue-gray-700">
                     {data.country}                  </Typography>
-                </div>
 
+
+                </div>
+                {data.idDisaster ? <div className="mb-16 flex items-center justify-center gap-2">
+                  <h3>Check the Details of the Disaster</h3>
+                  <Typography className="font-medium text-red-700">
+                    {data.idDisaster?.url}                  </Typography>
+                </div> : null}
               </div>
               <div className="mb-10 border-t border-blue-gray-50 py-6 text-center">
                 <div className="mt-2 flex flex-wrap justify-center">

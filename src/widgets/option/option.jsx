@@ -62,7 +62,7 @@ export const ReportDialog = ({ isOpen, onClose, id }) => {
                     (error) => {
                         Swal({
                             title: 'Error',
-                            text: 'There was an error sending the email. Please try again later.',
+                            text: 'There was an error sending the email. Please try again later.' + error.message,
                             icon: 'error',
                         });
                     }

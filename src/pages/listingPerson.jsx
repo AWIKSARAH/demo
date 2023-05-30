@@ -14,7 +14,6 @@ import Feed from "../widgets/cards/team-card";
 import Pagination from "@mui/material/Pagination";
 import { Loading } from "@/widgets/loading";
 import { DataContext } from "../data/dataContext";
-// import { eyesEnum, colorSkinEnum, colorHairEnum, genderEnum, foundEnum } from "../data/enumData";
 function Profile() {
   const { persons, loading, fetchPerson } = useContext(DataContext);
 
