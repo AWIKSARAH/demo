@@ -22,6 +22,7 @@ export function Navbar({ brandName, routes, action }) {
 
   const navList = (
     <ul className="mb-4 mt-2 flex flex-col gap-2 text-inherit lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
+
       {routes.map(({ name, path, icon, href, target }) => (
         <Typography
           key={name}
@@ -63,14 +64,15 @@ export function Navbar({ brandName, routes, action }) {
   return (
     <MTNavbar color="transparent" className="p-3">
       <div className="container mx-auto flex items-center justify-between text-white">
+
         <Link to="/">
           <Typography className="mr-4 ml-2 cursor-pointer py-1.5 font-bold">
- {brandName}
+            {brandName}
           </Typography>
         </Link>
         <div className="hidden lg:block">{navList}</div>
         <div className="hidden gap-2 lg:flex">
-         
+
           {React.cloneElement(action, {
             className: "hidden lg:inline-block",
           })}
@@ -95,7 +97,7 @@ export function Navbar({ brandName, routes, action }) {
       >
         <div className="container mx-auto">
           {navList}
-        
+
           {React.cloneElement(action, {
             className: "w-full block",
           })}
@@ -109,11 +111,10 @@ Navbar.defaultProps = {
   brandName: "FindLost",
   action: (
     <a
-      href="/home"
-      target="_blank"
+      href="/announcementForm"
     >
       <Button variant="gradient" size="sm" fullWidth>
-Try FindLost
+        Try FindLost
       </Button>
     </a>
   ),

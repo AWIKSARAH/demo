@@ -78,7 +78,7 @@ export const ReportDialog = ({ isOpen, onClose, id }) => {
             <DialogContent>
                 <form className="space-y-4">
                     <div>
-                        <Typography variant="subtitle1">Contact Information:</Typography>
+                        <Typography variant="subtitle1">Name Information:</Typography>
                         <TextField
                             type="text"
                             value={name}
