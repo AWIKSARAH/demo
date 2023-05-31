@@ -472,8 +472,9 @@ function AnnouncementForm() {
         }
     };
     useEffect(() => {
+        //${import.meta.env.VITE_APP_IMG_URL} VITE_API_URL
         // Fetch data from an API using Axios GET request
-        axios.get('http://localhost:5000/api/disaster')
+        axios.get(`${import.meta.env.VITE_API_URL}disaster`)
             .then(response => {
                 setOptions(response.data.data);
             })
@@ -531,11 +532,12 @@ function AnnouncementForm() {
         console.log(formData);
     };
 
+    //${import.meta.env.VITE_APP_IMG_URL} VITE_API_URL
 
     const postPerson = (e) => {
         e.preventDefault();
-        const url = 'http://localhost:5000/api/person';
-        const url_announmcemt = 'http://localhost:5000/api/a/';
+        const url = `${import.meta.env.VITE_API_URL}person`;
+        const url_announmcemt = `${import.meta.env.VITE_API_URL}a/`;
         const dataToSend = new FormData();
 
         // Append name field

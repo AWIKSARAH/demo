@@ -4,7 +4,7 @@ import { AnnouncementForm } from "@/widgets/form";
 import routes from "@/routes";
 import Profile from "./pages/profile";
 import { DataProvider } from "./data/dataContext";
-
+import NotFound from "./widgets/404Page/NotFound"
 function App() {
   return (
     <DataProvider>
@@ -18,7 +18,7 @@ function App() {
         )}
         <Route path="/a/:id" element={<Profile />} />
         <Route path="/announcementForm" element={<AnnouncementForm />} />
-        <Route path="*" element={<Navigate to="/home" replace />} />
+        <Route path="*" element={<NotFound></NotFound>} />
       </Routes>
     </DataProvider>
   );

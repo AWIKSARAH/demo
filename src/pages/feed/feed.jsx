@@ -30,7 +30,7 @@ const Feed = ({ totalPages, limit, data, id }) => {
           <motion.div
             className="article__img flex justify-start content-between flex-row items-start"
             style={{
-              backgroundImage: `url(http://localhost:5000${data.idPerson?.image}) `,
+              backgroundImage: `url(${import.meta.env.VITE_APP_IMG_URL}${data.idPerson?.image}) `,
             }}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}

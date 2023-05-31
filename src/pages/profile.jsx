@@ -46,9 +46,10 @@ export function Profile() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/a/${id}`);
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}a/${id}`);
         setData(response.data.data);
-        setUrl(`http://localhost:5000${response.data.data.idPerson.image}`)
+        //VITE_APP_IMG_URL
+        setUrl(`${import.meta.env.VITE_APP_IMG_URL}${response.data.data.idPerson.image}`)
         setIsLoading(false); // Set isLoading to false when data is fetched
       } catch (error) {
         console.error(error);
@@ -142,8 +143,8 @@ export function Profile() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const commentUrl = "http://localhost:5000/api/comment";
-    const oldPostUrl = `http://localhost:5000/api/a/${id}`;
+    const commentUrl = `${import.meta.env.VITE_API_URL}comment`;
+    const oldPostUrl = `${import.meta.env.VITE_API_URL}a/${id}`;
 
     axios
       .post(commentUrl, comment)
@@ -297,10 +298,14 @@ export function Profile() {
 
                 </div>
                 {data.idDisaster ? <div className="mb-16 flex items-center justify-center gap-2">
-                  <h3>Check the Details of the Disaster</h3>
+                  <Typography>Check the Details of the Disaster</Typography>
                   <Typography className="font-medium text-red-700">
-                    {data.idDisaster?.url}                  </Typography>
+                    <a href={data.idDisaster?.url} _blank >{data.idDisaster?.url}  </a>
+                  </Typography>
                 </div> : null}
+
+
+
               </div>
               <div className="mb-10 border-t border-blue-gray-50 py-6 text-center">
                 <div className="mt-2 flex flex-wrap justify-center">

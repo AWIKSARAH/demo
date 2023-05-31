@@ -97,6 +97,8 @@ export function Home() {
               </div>
               <Typography variant="h3" className="mb-3 font-bold" color="blue-gray">
                 Find Missing People Easily
+                {/* test {import.meta.env.VITE_API_URL} */}
+
               </Typography>
               <Typography className="mb-8 font-normal text-blue-gray-500">
                 Don't let the search for missing loved ones be a daunting task. With our innovative platform, you can easily search and track missing individuals. Our advanced algorithms and extensive database make the search process faster and more efficient.

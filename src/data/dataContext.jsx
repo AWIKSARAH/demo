@@ -1,6 +1,7 @@
 import React, { createContext, useState } from "react";
 import axios from "axios";
 
+
 // Create the context
 const DataContext = createContext();
 
@@ -13,7 +14,7 @@ const DataProvider = ({ children }) => {
   const fetchData = (searchQuery, filterType, currentPage) => {
     const query = searchQuery ? `&q=${searchQuery}` : "";
     const type = filterType ? `&type=${filterType}` : "";
-    const url = `http://localhost:5000/api/a/?page=${currentPage}${query}${type}`;
+    const url = `${import.meta.env.VITE_API_URL}a/?page=${currentPage}${query}${type}`;
     // const
     setLoading(true);
 
@@ -32,7 +33,7 @@ const DataProvider = ({ children }) => {
   const fetchPerson = (searchQuery, filterType, currentPage) => {
     const query = searchQuery ? `&q=${searchQuery}` : "";
     const type = filterType ? `&found=${filterType}` : "";
-    const url = `http://localhost:5000/api/person/?page=${currentPage}${query}${type}`;
+    const url = `${import.meta.env.VITE_API_URL}person/?page=${currentPage}${query}${type}`;
     setLoading(true);
     console.log({ "searchQuery": searchQuery, "filterType": filterType, "currentPage": currentPage });
     axios
