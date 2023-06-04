@@ -172,7 +172,7 @@ export function Home() {
               <Input variant="standard" size="lg" name="name" onChange={handleChange} label="Full Name" />
               <Input variant="standard" size="lg" name="email" onChange={handleChange} label="Email Address" />
             </div>
-            <Textarea variant="standard" size="lg" name="message" label="Message" onChange={handleChange} rows={8} />
+            <Textarea variant="standard" size="lg" className="min-w-20"name="message" label="Message" onChange={handleChange} rows={8} />
             <Button variant="gradient" size="lg" className="mt-8" onClick={handleSubmit}>
               Send Message
             </Button>

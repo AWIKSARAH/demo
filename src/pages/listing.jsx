@@ -176,8 +176,7 @@ function Profile() {
                 <div className="mt-2 flex flex-wrap justify-center">
                   <div className="flex w-full flex-col items-center px-4 lg:w-9/12">
                     <Typography className="mb-8 font-normal text-blue-gray-500">
-                      Welcome to our announcement page, where we bring you the latest news and updates from the vibrant world of music. Stay tuned as we unveil exciting performances, upcoming releases, and exclusive behind-the-scenes insights.
-                    </Typography>
+                      Welcome to our Lost & Found People Announcement Page. Here, we provide a platform to help reconnect missing individuals with their loved ones. Stay updated as we share information about missing persons, found individuals, and relevant updates from the community. Our goal is to bring hope and support to those searching for their missing loved ones. Join us as we work together to make a difference and bring families back together.                    </Typography>
                   </div>
                 </div>
               </div>
