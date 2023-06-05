@@ -115,7 +115,7 @@ function AnnouncementForm() {
         postPerson();
     }
     const postPerson = (e) => {
-        console.log("hello");
+        console.log('hello');
         e.preventDefault();
         const url = `${import.meta.env.VITE_API_URL}person`;
         const url_announmcemt = `${import.meta.env.VITE_API_URL}a/`;
@@ -123,45 +123,53 @@ function AnnouncementForm() {
         console.log(formValues);
 
         const fd = new FormData();
-        console.log(formData)
-        fd.append("image", image, image.name)
-        console.log(formData)
+        console.log(formData);
+        fd.append('image', image, image.name);
+        console.log(formData);
 
-        axios.post("https://api.imgbb.com/1/upload?key=48dcaab02f110b881b98e067571afcd1", fd).then((response) => {
-            console.log(response);
-            setDisplayUrl(response.data.data.display_url)
-
-        }).catch((error) => {
-            console.log(error);
-        })
-        formData.image = displayUrl;
         axios
-            .post(url, formData)
+            .post('https://api.imgbb.com/1/upload?key=48dcaab02f110b881b98e067571afcd1', fd)
             .then((response) => {
-                const idPerson = response.data.data._id.toString();
-                console.log('Ana honnnnnn', idPerson)
-                setFormValues((v) => ({ ...v, idPerson: idPerson, country: country }))
-                axios.post(url_announmcemt, formValues).then((response) => {
-                    console.log(response);
+                console.log(response);
+                // setDisplayUrl();
 
-                    swal({
-                        title: 'Success',
-                        text: 'The Form was sent successfully! as soon as possible We Will send you a reminder email',
-                        icon: 'success',
+                formData.image = response.data.data.display_url; // Add this line to include displayUrl in the formData
+                alert('Image' + response.data.data.display_url)
+                axios
+                    .post(url, formData)
+                    .then((response) => {
+                        const idPerson = response.data.data._id.toString();
+                        console.log('Ana honnnnnn', idPerson);
+                        setFormValues((v) => ({ ...v, idPerson: idPerson, country: country }));
+                        axios
+                            .post(url_announmcemt, formValues)
+                            .then((response) => {
+                                console.log(response);
+
+                                swal({
+                                    title: 'Success',
+                                    text: 'The Form was sent successfully! as soon as possible We Will send you a reminder email',
+                                    icon: 'success',
+                                });
+                            })
+                            .catch((error) => {
+                                console.log(error);
+                            });
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                        swal({
+                            title: 'Error',
+                            text: 'There was an error sending the email. Please try again later.' + error.message,
+                            icon: 'error',
+                        });
                     });
-
-                }).catch((error) => { console.log(error) })
-
             })
             .catch((error) => {
                 console.log(error);
-                swal({
-                    title: 'Error',
-                    text: 'There was an error sending the email. Please try again later.' + error.message,
-                    icon: 'error',
-                });
             });
     };
+
 
 
     const CustomStyle = {

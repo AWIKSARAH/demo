@@ -14,7 +14,7 @@ const Feed = ({ totalPages, limit, data, id }) => {
   const toggleDescription = () => {
     setShowFullDescription(!showFullDescription);
   };
-
+  console.log(data);
   return (
     <AnimatePresence mode="popLayout">
       <motion.section
