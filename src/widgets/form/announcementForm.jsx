@@ -17,7 +17,7 @@ function AnnouncementForm() {
     const [formData, setFormData] = useState() // Initialize formData using new FormData()
     let history = useNavigate();
     const [options, setOptions] = useState([]);
-
+    const [country, setCountry] = useState('')
 
     const renderForm = () => {
         switch (step) {
@@ -26,11 +26,19 @@ function AnnouncementForm() {
                     <Form2 onNext={handleNext}
                         onCancel={handleGoBack}
                         handleFileChangeImage={handleFileChangeImage}
-                        handleFileChange={handleFileChange} />
+                        handleFileChange={handleFileChange}
+
+                    />
                 )
             case 2:
                 return (
-                    <Form3 options={options} handleChange={handleChange} f={formData} />
+                    <Form3 options={options}
+                        onCancel={handleGoBack}
+                        handleChange={handleChange}
+                        handlePrevious={handlePrevious}
+                        handleSubmit={postPerson}
+                        setCountry={setCountry}
+                    />
                 );
 
             default:
@@ -56,7 +64,6 @@ function AnnouncementForm() {
     const handleNext = (formData) => {
         setStep((prevStep) => prevStep + 1);
         setFormData(formData);
-        console.log(formData);
     };
 
     const handlePrevious = () => {
@@ -73,6 +80,14 @@ function AnnouncementForm() {
         );
         console.log(formValues);
     };
+
+    const handleChangeCountry = (selected) => {
+
+        setFormValues((prevFormValues) => ({
+            ...prevFormValues,
+            country: selected,
+        }))
+    }
 
 
     const handleFileChange = (e) => {
@@ -96,9 +111,12 @@ function AnnouncementForm() {
         };
 
     //${import.meta.env.VITE_APP_IMG_URL} VITE_API_URL
-
+    const handleSubmit = () => {
+        alert('Submit')
+        postPerson();
+    }
     const postPerson = (e) => {
-        console.log();
+        console.log("hello");
         e.preventDefault();
         const url = `${import.meta.env.VITE_API_URL}person`;
         const url_announmcemt = `${import.meta.env.VITE_API_URL}a/`;
@@ -153,7 +171,7 @@ function AnnouncementForm() {
             .post(url, dataToSend)
             .then((response) => {
                 const idPerson = response.data.data._id;
-                setFormValues((v) => ({ ...v, idPerson: idPerson }))
+                setFormValues((v) => ({ ...v, idPerson: idPerson, country: country }))
                 axios.post(url_announmcemt, formValues).then((response) => {
                     console.log(response);
 
@@ -186,7 +204,7 @@ function AnnouncementForm() {
     };
 
     return (
-        <form onSubmit={postPerson}>
+        <form >
             <section className="relative block h-[50vh]">
                 <div className="bg-profile-background absolute top-0 h-full w-full bg-[url('../../public/img/bg.jpeg')] bg-cover bg-no-repeat bg-center flex items-center justify-center text-white text-4xl font-bold" style={CustomStyle}>
                     <span className="font-serif">Embrace hope, take courageous steps forward </span>

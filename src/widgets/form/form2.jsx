@@ -1,28 +1,87 @@
 import React, { useState } from 'react';
 import { Select, MenuItem, FormControl, InputLabel } from "@mui/material";
 import { PhotoIcon } from '@heroicons/react/24/solid'
+import * as yup from 'yup';
+import { useFormik } from 'formik'
+const AnnouncementForm = ({ onNext, onCancel, handleFileChangeImage }) => {
+    // const [formData, setFormData] = useState({
+    //     name: '',
+    //     tel: '',
+    //     found: '',
+    //     dob: '',
+    //     gender: '',
+    //     eyes: '',
+    //     colorSkin: '',
+    //     colorHair: '',
+    //     specificInfo: '',
+    // });
 
-const AnnouncementForm = ({ onNext, onCancel, handleFileChangeImage, handleFileChange }) => {
-    const [formData, setFormData] = useState({
-        name: '',
-        tel: '',
-        found: '',
-        dob: '',
-        gender: '',
-        eyes: '',
-        colorSkin: '',
-        colorHair: '',
-        specificInfo: '',
+    const formik = useFormik({
+        initialValues: {
+            // Define initial values for your form fields
+            name: '',
+            tel: '',
+            found: '',
+            dob: '',
+            gender: '',
+            eyes: '',
+            colorSkin: '',
+            colorHair: '',
+            specificInfo: '',
+            // Add other form fields here
+        },
+        validate: (values) => {
+            // Define your validation logic here
+            const errors = {};
+            // Check each field and assign error message if validation fails
+            if (!values.name) {
+                errors.name = 'This field is required';
+            }
+            if (!values.tel) {
+                errors.tel = 'This field is required';
+            }
+            if (!values.found) {
+                errors.found = 'This field is required';
+            }
+            if (!values.dob) {
+                errors.dob = 'This field is required';
+            }
+            if (!values.gender) {
+                errors.gender = 'This field is required';
+            }
+            if (!values.eyes) {
+                errors.eyes = 'This field is required';
+            }
+            if (!values.colorSkin) {
+                errors.colorSkin = 'This field is required';
+            }
+            if (!values.colorHair) {
+                errors.colorHair = 'This field is required';
+            }
+            if (!values.specificInfo) {
+                errors.specificInfo = 'This field is required';
+            }
+            return errors;
+        },
+        onSubmit: (values, { setSubmitting }) => {
+            setSubmitting(true);
+            onNext(values)
+
+        },
     });
+    function handleSubmitting(e) {
+        e.preventDefault();
+        formik.han
 
+    }
 
     return (
         <div className="mb-10 border-t border-blue-gray-50 py-6 ">
             <div className="mt-2 flex flex-wrap justify-center">
                 <div className="mb-10 border-t border-blue-gray-50 py-6">
-                    <form >
+                    <form onSubmit={formik.handleSubmit} >
                         <div className="mt-2 flex flex-wrap justify-center">
-                            <form>
+                            <>
                                 <div className="space-y-12">
                                     <div className="border-b border-gray-900/10 pb-12">
                                         <h2 className="text-base font-semibold leading-7 text-gray-900"> Person Lost/Found Information</h2>
@@ -38,34 +97,25 @@ const AnnouncementForm = ({ onNext, onCancel, handleFileChangeImage, handleFileC
                                                 <div className="mt-2">
                                                     <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                                                         <input
-                                                            onBlur={(e) => {
-                                                                const inputElement = e.target;
-                                                                const errorMessageElement = document.getElementById('name-error-message');
-
-                                                                if (!inputElement.value) {
-                                                                    inputElement.style.borderColor = 'red';
-                                                                    inputElement.style.boxShadow = '0 0 3px red';
-                                                                    errorMessageElement.textContent = 'This field is required!';
-                                                                } else {
-                                                                    inputElement.style.borderColor = '';
-                                                                    inputElement.style.boxShadow = '';
-                                                                    errorMessageElement.textContent = '';
-                                                                }
-                                                            }}
+                                                            value={formik.values.name}
+                                                            onChange={formik.handleChange}
+                                                            onBlur={formik.handleBlur}
                                                             type="text"
                                                             name="name"
                                                             id="name"
                                                             autoComplete="name"
                                                             className={`block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 `}
                                                             placeholder="Name of the person *"
-                                                            required
-                                                            onChange={handleFileChange}
+                                                        // required
                                                         />
 
-                                                        <span id="name-error-message" style={{ color: 'red' }}></span>
 
 
                                                     </div>
+
+                                                    {formik.touched.name && formik.errors.name && (
+                                                        <div className="text-red-500">{formik.errors.name}</div>
+                                                    )}
                                                 </div>
                                             </div>
                                             <div className="sm:col-span-4">
@@ -83,26 +133,18 @@ const AnnouncementForm = ({ onNext, onCancel, handleFileChangeImage, handleFileC
                                                             className={`block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6`}
                                                             placeholder="Contact number"
                                                             required
-                                                            onBlur={(e) => {
-                                                                const inputElement = e.target;
-                                                                const errorMessageElement = document.getElementById('name-error-message');
-
-                                                                if (!inputElement.value) {
-                                                                    inputElement.style.borderColor = 'red';
-                                                                    inputElement.style.boxShadow = '0 0 3px red';
-                                                                    errorMessageElement.textContent = 'This field is required!';
-                                                                } else {
-                                                                    inputElement.style.borderColor = '';
-                                                                    inputElement.style.boxShadow = '';
-                                                                    errorMessageElement.textContent = '';
-                                                                }
-                                                            }}
-                                                            onChange={handleFileChange}
+                                                            value={formik.values.tel}
+                                                            onChange={formik.handleChange}
+                                                            onBlur={formik.handleBlur}
 
                                                         />
-                                                        <span id="name-error-message" style={{ color: 'red' }}></span>
+
+
 
                                                     </div>
+                                                    {formik.touched.tel && formik.errors.tel && (
+                                                        <div className="text-red-500">{formik.errors.tel}</div>
+                                                    )}
                                                 </div>
                                             </div>
                                             <div className="sm:col-span-4">
@@ -113,34 +155,25 @@ const AnnouncementForm = ({ onNext, onCancel, handleFileChangeImage, handleFileC
                                                     <FormControl variant="outlined" fullWidth>
                                                         <InputLabel id="type-label">Type *</InputLabel>
                                                         <Select
-                                                            onBlur={(e) => {
-                                                                const inputElement = e.target;
-                                                                const errorMessageElement = document.getElementById('type-error-message');
-
-                                                                if (!inputElement.value) {
-                                                                    inputElement.style.borderColor = 'red';
-                                                                    inputElement.style.boxShadow = '0 0 3px red';
-                                                                    errorMessageElement.textContent = 'This field is required!';
-                                                                } else {
-                                                                    inputElement.style.borderColor = '';
-                                                                    inputElement.style.boxShadow = '';
-                                                                    errorMessageElement.textContent = '';
-                                                                }
-                                                            }}
-                                                            className={`block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6`}
                                                             labelId="type-label"
                                                             id="found"
                                                             name="found"
+                                                            value={formik.values.founnd}
+                                                            onChange={formik.handleChange}
+                                                            onBlur={formik.handleBlur}
                                                             required
-                                                            onChange={handleFileChange}
+
+
                                                         >
                                                             <MenuItem value="">Select an option</MenuItem>
                                                             <MenuItem value="found">Found</MenuItem>
                                                             <MenuItem value="lost">Lost</MenuItem>
                                                             {/* Add more menu items as needed */}
                                                         </Select>
-                                                        <span id="type-error-message" style={{ color: 'red' }}></span>
                                                     </FormControl>
+                                                    {formik.touched.found && formik.errors.found && (
+                                                        <div className="text-red-500">{formik.errors.found}</div>
+                                                    )}
 
                                                 </div>
                                             </div>
@@ -151,21 +184,7 @@ const AnnouncementForm = ({ onNext, onCancel, handleFileChangeImage, handleFileC
                                                 <div className="mt-2">
                                                     <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                                                         <input
-                                                            onBlur={(e) => {
-                                                                const inputElement = e.target;
-                                                                const errorMessageElement = document.getElementById('type-error-message');
 
-                                                                if (!inputElement.value) {
-                                                                    inputElement.style.borderColor = 'red';
-                                                                    inputElement.style.boxShadow = '0 0 3px red';
-                                                                    errorMessageElement.textContent = 'This field is required!';
-                                                                } else {
-                                                                    inputElement.style.borderColor = '';
-                                                                    inputElement.style.boxShadow = '';
-                                                                    errorMessageElement.textContent = '';
-                                                                }
-                                                            }}
-                                                            onChange={handleFileChange}
                                                             type="date"
                                                             name="dob"
                                                             id="dob"
@@ -173,10 +192,15 @@ const AnnouncementForm = ({ onNext, onCancel, handleFileChangeImage, handleFileC
                                                             className={`block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6`}
                                                             placeholder="Date of birth"
                                                             required
+                                                            value={formik.values.dob}
+                                                            onChange={formik.handleChange}
+                                                            onBlur={formik.handleBlur}
                                                         />
-                                                        <span id="type-error-message" style={{ color: 'red' }}></span>
 
                                                     </div>
+                                                    {formik.touched.dob && formik.errors.dob && (
+                                                        <div className="text-red-500">{formik.errors.dob}</div>
+                                                    )}
                                                 </div>
                                             </div>
                                             <div className="sm:col-span-4">
@@ -187,23 +211,9 @@ const AnnouncementForm = ({ onNext, onCancel, handleFileChangeImage, handleFileC
                                                     <FormControl fullWidth>
                                                         <InputLabel id="gender-label">Gender</InputLabel>
                                                         <Select
-                                                            onBlur={(e) => {
-                                                                const inputElement = e.target;
-                                                                const errorMessageElement = document.getElementById('type-error-message');
-
-                                                                if (!inputElement.value) {
-                                                                    inputElement.style.borderColor = 'red';
-                                                                    inputElement.style.boxShadow = '0 0 3px red';
-                                                                    errorMessageElement.textContent = 'This field is required!';
-                                                                } else {
-                                                                    inputElement.style.borderColor = '';
-                                                                    inputElement.style.boxShadow = '';
-                                                                    errorMessageElement.textContent = '';
-                                                                }
-
-                                                            }}
-                                                            onChange={handleFileChange}
-                                                            className={`block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6`}
+                                                            value={formik.values.gender}
+                                                            onChange={formik.handleChange}
+                                                            onBlur={formik.handleBlur}
                                                             labelId="gender-label"
                                                             id="gender"
                                                             name="gender"
@@ -217,8 +227,9 @@ const AnnouncementForm = ({ onNext, onCancel, handleFileChangeImage, handleFileC
                                                             <MenuItem value="Other">Other</MenuItem>
                                                         </Select>
                                                     </FormControl>
-                                                    <span id="type-error-message" style={{ color: 'red' }}></span>
-
+                                                    {formik.touched.gender && formik.errors.gender && (
+                                                        <div className="text-red-500">{formik.errors.gender}</div>
+                                                    )}
                                                 </div>
                                             </div>
                                             <div className="sm:col-span-4">
@@ -229,28 +240,15 @@ const AnnouncementForm = ({ onNext, onCancel, handleFileChangeImage, handleFileC
                                                     <FormControl fullWidth>
                                                         <InputLabel id="eyes-label">Eye Color</InputLabel>
                                                         <Select
-                                                            className={`block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6`}
 
                                                             labelId="eyes-label"
                                                             id="eyes"
                                                             required
                                                             name="eyes"
-                                                            onBlur={(e) => {
-                                                                const inputElement = e.target;
-                                                                const errorMessageElement = document.getElementById('type-error-message');
-
-                                                                if (!inputElement.value) {
-                                                                    inputElement.style.borderColor = 'red';
-                                                                    inputElement.style.boxShadow = '0 0 3px red';
-                                                                    errorMessageElement.textContent = 'This field is required!';
-                                                                } else {
-                                                                    inputElement.style.borderColor = '';
-                                                                    inputElement.style.boxShadow = '';
-                                                                    errorMessageElement.textContent = '';
-                                                                }
-
-                                                            }}
-                                                            onChange={handleFileChange}                                                        >
+                                                            value={formik.values.eyes}
+                                                            onChange={formik.handleChange}
+                                                            onBlur={formik.handleBlur}
+                                                        >
                                                             <MenuItem value="">Select eye color</MenuItem>
                                                             <MenuItem value="Blue">Blue</MenuItem>
                                                             <MenuItem value="Brown">Brown</MenuItem>
@@ -258,8 +256,9 @@ const AnnouncementForm = ({ onNext, onCancel, handleFileChangeImage, handleFileC
                                                             <MenuItem value="Hazel">Hazel</MenuItem>
                                                         </Select>
                                                     </FormControl>
-                                                    <span id="type-error-message" style={{ color: 'red' }}></span>
-
+                                                    {formik.touched.eyes && formik.errors.eyes && (
+                                                        <div className="text-red-500">{formik.errors.eyes}</div>
+                                                    )}
                                                 </div>
                                             </div>
                                             <div className="sm:col-span-4">
@@ -274,10 +273,10 @@ const AnnouncementForm = ({ onNext, onCancel, handleFileChangeImage, handleFileC
                                                                 required
                                                                 labelId="colorSkin-label"
                                                                 id="colorSkin"
-                                                                className={`block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6`}
                                                                 name="colorSkin"
-
-                                                                onChange={handleFileChange}
+                                                                value={formik.values.colorSkin}
+                                                                onChange={formik.handleChange}
+                                                                onBlur={formik.handleBlur}
 
                                                             >
                                                                 <MenuItem value="">Select skin color</MenuItem>
@@ -287,7 +286,9 @@ const AnnouncementForm = ({ onNext, onCancel, handleFileChangeImage, handleFileC
                                                             </Select>
                                                         </FormControl>
 
-
+                                                        {formik.touched.colorSkin && formik.errors.colorSkin && (
+                                                            <div className="text-red-500">{formik.errors.colorSkin}</div>
+                                                        )}
                                                     </div>
                                                 </div>
                                             </div>
@@ -300,14 +301,13 @@ const AnnouncementForm = ({ onNext, onCancel, handleFileChangeImage, handleFileC
                                                         <FormControl fullWidth>
                                                             <InputLabel id="colorHair-label">Hair Color</InputLabel>
                                                             <Select
-                                                                onBlur={handleFileChange}
-                                                                className={`block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6`}
-
                                                                 required
                                                                 labelId="colorHair-label"
                                                                 id="colorHair"
                                                                 name="colorHair"
-                                                                onChange={handleFileChange}
+                                                                value={formik.values.colorHair}
+                                                                onChange={formik.handleChange}
+                                                                onBlur={formik.handleBlur}
                                                             >
                                                                 <MenuItem value="">Select hair color</MenuItem>
                                                                 <MenuItem value="Blonde">Blonde</MenuItem>
@@ -325,30 +325,18 @@ const AnnouncementForm = ({ onNext, onCancel, handleFileChangeImage, handleFileC
                                                 </label>
                                                 <div className="mt-2">
                                                     <textarea
-                                                        onBlur={(e) => {
-                                                            const inputElement = e.target;
-                                                            const errorMessageElement = document.getElementById('type-error-message');
-
-                                                            if (!inputElement.value) {
-                                                                inputElement.style.borderColor = 'red';
-                                                                inputElement.style.boxShadow = '0 0 3px red';
-                                                                errorMessageElement.textContent = 'This field is required!';
-                                                            } else {
-                                                                inputElement.style.borderColor = '';
-                                                                inputElement.style.boxShadow = '';
-                                                                errorMessageElement.textContent = '';
-                                                            }
-                                                        }}
-                                                        onChange={handleFileChange}
+                                                        value={formik.values.specificInfo}
+                                                        onChange={formik.handleChange}
+                                                        onBlur={formik.handleBlur}
                                                         id="specificInfo"
                                                         name="specificInfo"
                                                         rows="3"
                                                         className="block w-full border-gray-300 shadow-sm sm:text-sm focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md"
                                                         placeholder="Enter any specific information"
-
                                                     ></textarea>
-                                                    <span id="colorSkin-error-message" style={{ color: 'red' }}></span>
-
+                                                    {formik.touched.specificInfo && formik.errors.specificInfo && (
+                                                        <div className="text-red-500">{formik.errors.specificInfo}</div>
+                                                    )}
                                                 </div>
                                             </div>
                                             <div className="col-span-full">
@@ -384,32 +372,34 @@ const AnnouncementForm = ({ onNext, onCancel, handleFileChangeImage, handleFileC
                                     </div>
                                 </div>
                                 {/* </div> */}
-                            </form>
+                            </>
                         </div>
 
 
+                        <div class="mt-12 flex justify-between flex-row-reverse">
+
+                            <button
+                                type="button"
+                                class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out"
+                                onClick={formik.handleSubmit}
+                            >Next</button>
+                            <button
+                                type="button"
+                                onClick={onCancel}
+                                class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out"
+                            >
+                                Cancel
+                            </button>
+
+                        </div>
                     </form>
                 </div>
             </div >
-            <div class="mt-12 flex justify-between flex-row-reverse">
-
-                <button
-                    type="button"
-
-                    class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out"
-                    onClick={onNext}
-                >Next</button>
-                <button
-                    type="button"
-                    onClick={onCancel}
-                    class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out"
-                >
-                    Cancel
-                </button>
-
-            </div>
             {/* </div> */}
+
+
         </div >
+
     );
 };
 
