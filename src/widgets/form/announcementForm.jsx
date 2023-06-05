@@ -18,7 +18,8 @@ function AnnouncementForm() {
     let history = useNavigate();
     const [options, setOptions] = useState([]);
     const [country, setCountry] = useState('')
-
+    const [image, setImage] = useState('')
+    const [displayUrl, setDisplayUrl] = useState('')
     const renderForm = () => {
         switch (step) {
             case 1:
@@ -38,6 +39,7 @@ function AnnouncementForm() {
                         handlePrevious={handlePrevious}
                         handleSubmit={postPerson}
                         setCountry={setCountry}
+                        handleFileChangeImage={handleFileChangeImage}
                     />
                 );
 
@@ -64,6 +66,7 @@ function AnnouncementForm() {
     const handleNext = (formData) => {
         setStep((prevStep) => prevStep + 1);
         setFormData(formData);
+        console.log(formData);
     };
 
     const handlePrevious = () => {
@@ -101,13 +104,9 @@ function AnnouncementForm() {
     };
 
     const handleFileChangeImage =
-        (e) => {
-            const file = e.target.files[0];
-            setFormData((prevFormValues) => ({
-                ...prevFormValues,
-                person: file,
-            }));
-            console.log(formData);
+        (Value) => {
+            setImage(Value);
+            alert('File changed')
         };
 
     //${import.meta.env.VITE_APP_IMG_URL} VITE_API_URL
@@ -120,55 +119,24 @@ function AnnouncementForm() {
         e.preventDefault();
         const url = `${import.meta.env.VITE_API_URL}person`;
         const url_announmcemt = `${import.meta.env.VITE_API_URL}a/`;
-        const dataToSend = new FormData();
-
-        // Append name field
-        if (formData.name) {
-            dataToSend.append('name', formData.name);
-        }
-        if (formData.found) {
-            dataToSend.append('found', formData.found);
-        }
-
-        // Append description field
-        if (formData.description) {
-            dataToSend.append('description', formData.description);
-        }
-
-        // Append dob field
-        if (formData.dob) {
-            dataToSend.append('dob', formData.dob);
-        }
-
-        // Append gender field
-        if (formData.gender) {
-            dataToSend.append('gender', formData.gender);
-        }
-
-        // Append eyes field
-        if (formData.eyes) {
-            dataToSend.append('eyes', formData.eyes);
-        }
-
-        if (formData.colorSkin) {
-            dataToSend.append('colorSkin', formData.colorSkin);
-        }
-
-        if (formData.colorHair) {
-            dataToSend.append('colorHair', formData.colorHair);
-        }
-
-        if (formData.specificInfo) {
-            dataToSend.append('specificInfo', formData.specificInfo);
-        }
-
-        if (formData.person) {
-            dataToSend.append('person', formData.person);
-        }
         console.log(formData);
         console.log(formValues);
+
+        const fd = new FormData();
+        console.log(formData)
+        fd.append("image", image, image.name)
+        console.log(formData)
+
+        axios.post("https://api.imgbb.com/1/upload?key=48dcaab02f110b881b98e067571afcd1", fd).then((response) => {
+            console.log(response);
+            setDisplayUrl(response.data.data.display_url)
+
+        }).catch((error) => {
+            console.log(error);
+        })
+        formData.image = displayUrl;
         axios
-            .post(url, dataToSend)
+            .post(url, formData)
             .then((response) => {
                 const idPerson = response.data.data._id;
                 setFormValues((v) => ({ ...v, idPerson: idPerson, country: country }))

@@ -15,6 +15,7 @@ const AnnouncementForm = ({ onNext, onCancel, handleFileChangeImage }) => {
     //     colorHair: '',
     //     specificInfo: '',
     // });
+    const [image, setImage] = useState('')
 
     const formik = useFormik({
         initialValues: {
@@ -74,7 +75,11 @@ const AnnouncementForm = ({ onNext, onCancel, handleFileChangeImage }) => {
         formik.han
 
     }
-
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        handleFileChangeImage(file);
+        alert('done')
+    };
     return (
         <div className="mb-10 border-t border-blue-gray-50 py-6 ">
             <div className="mt-2 flex flex-wrap justify-center">
@@ -352,9 +357,9 @@ const AnnouncementForm = ({ onNext, onCancel, handleFileChangeImage }) => {
                                                                 className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
                                                             >
                                                                 <span>Upload a file</span>
-                                                                <input id="file-upload" name="person" type="file" className="sr-only"
+                                                                <input id="file-upload" name="image" type="file" className="sr-only"
 
-                                                                    onChange={handleFileChangeImage}
+                                                                    onChange={handleImageChange}
 
                                                                 />
                                                             </label>
