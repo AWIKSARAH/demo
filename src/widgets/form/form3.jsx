@@ -3,7 +3,6 @@ import { Select, MenuItem } from '@mui/material';
 import ReactFlagsSelect from 'react-flags-select';
 
 const YourComponent = ({ options, handleChange, handlePrevious, onCancel, handleSubmit, setCountry }) => {
-    console.log(options);
     const handleSelectCountry = (countryCode) => {
         alert(countryCode);
         setCountry(countryCode);

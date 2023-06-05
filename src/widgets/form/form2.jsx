@@ -75,7 +75,6 @@ const AnnouncementForm = ({ onNext, onCancel, handleFileChangeImage }) => {
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         handleFileChangeImage(file);
-        alert('done')
     };
     return (
         <div className="mb-10 border-t border-blue-gray-50 py-6 ">

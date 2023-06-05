@@ -53,7 +53,6 @@ function AnnouncementForm() {
         axios.get(`${import.meta.env.VITE_API_URL}disaster`)
             .then(response => {
                 setOptions(response.data.data);
-                console.log(response.data.data);
             })
             .catch(error => {
                 console.error(error);
@@ -66,7 +65,6 @@ function AnnouncementForm() {
     const handleNext = (formData) => {
         setStep((prevStep) => prevStep + 1);
         setFormData(formData);
-        console.log(formData);
     };
 
     const handlePrevious = () => {
@@ -81,7 +79,6 @@ function AnnouncementForm() {
         })
 
         );
-        console.log(formValues);
     };
 
     const handleChangeCountry = (selected) => {
@@ -99,19 +96,16 @@ function AnnouncementForm() {
             ...prevFormValues,
             [name]: value,
         }));
-        console.log(formData);
 
     };
 
     const handleFileChangeImage =
         (Value) => {
             setImage(Value);
-            alert('File changed')
         };
 
     //${import.meta.env.VITE_APP_IMG_URL} VITE_API_URL
     const handleSubmit = () => {
-        alert('Submit')
         postPerson();
     }
     const postPerson = (e) => {
@@ -119,32 +113,25 @@ function AnnouncementForm() {
         e.preventDefault();
         const url = `${import.meta.env.VITE_API_URL}person`;
         const url_announmcemt = `${import.meta.env.VITE_API_URL}a/`;
-        console.log(formData);
-        console.log(formValues);
 
         const fd = new FormData();
-        console.log(formData);
         fd.append('image', image, image.name);
-        console.log(formData);
 
         axios
             .post('https://api.imgbb.com/1/upload?key=48dcaab02f110b881b98e067571afcd1', fd)
             .then((response) => {
-                console.log(response);
-                // setDisplayUrl();
+
 
                 formData.image = response.data.data.display_url; // Add this line to include displayUrl in the formData
-                alert('Image' + response.data.data.display_url)
+                // alert('Image' + response.data.data.display_url)
                 axios
                     .post(url, formData)
                     .then((response) => {
                         const idPerson = response.data.data._id.toString();
-                        console.log('Ana honnnnnn', idPerson);
                         setFormValues((v) => ({ ...v, idPerson: idPerson, country: country }));
                         axios
                             .post(url_announmcemt, formValues)
                             .then((response) => {
-                                console.log(response);
 
                                 swal({
                                     title: 'Success',
@@ -153,11 +140,14 @@ function AnnouncementForm() {
                                 });
                             })
                             .catch((error) => {
-                                console.log(error);
+                                swal({
+                                    title: 'Error',
+                                    text: 'There was an error sending the email. Please try again later.' + error.message,
+                                    icon: 'error',
+                                });
                             });
                     })
                     .catch((error) => {
-                        console.log(error);
                         swal({
                             title: 'Error',
                             text: 'There was an error sending the email. Please try again later.' + error.message,
