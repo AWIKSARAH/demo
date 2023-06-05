@@ -172,7 +172,7 @@ const YourComponent = ({ options, handleChange, handlePrevious, onCancel, handle
                                     <h3 className="mb-4 font-semibold text-gray-900 dark:text-white">Disaster (optional: depends on the situation)</h3>
                                     <div className="mt-2">
                                         <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                                            <Select name="disasterId" id="disasterId"
+                                            <Select name="idDisaster" id="idDisaster"
                                                 className="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                                 onChange={handleChange}
                                                 required

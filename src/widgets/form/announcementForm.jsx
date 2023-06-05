@@ -138,7 +138,8 @@ function AnnouncementForm() {
         axios
             .post(url, formData)
             .then((response) => {
-                const idPerson = response.data.data._id;
+                const idPerson = response.data.data._id.toString();
+                console.log('Ana honnnnnn', idPerson)
                 setFormValues((v) => ({ ...v, idPerson: idPerson, country: country }))
                 axios.post(url_announmcemt, formValues).then((response) => {
                     console.log(response);

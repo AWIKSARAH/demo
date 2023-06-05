@@ -91,7 +91,7 @@ function Profile() {
                       </Typography>
                     </div>
                     <div className="mr-4 p-3 text-center"
-                      onClick={() => { setFilterType('Lost') }}
+                      onClick={() => { setFilterType('lost') }}
 
                     >
                       <Typography
@@ -99,7 +99,7 @@ function Profile() {
                         color="textSecondary"
                         className="font-bold uppercase"
                       >
-                        {persons.lostCount ? persons.lostCount : "Loading"}
+                        {persons.lostCount !== undefined ? persons.lostCount : "Loading"}
 
                       </Typography>
                       <Typography
@@ -121,7 +121,11 @@ function Profile() {
                         className="font-bold uppercase"
 
                       >
-                        {persons.lostCount && persons.foundCount ? persons.lostCount + persons.foundCount : "Loading"}
+                        {persons.lostCount !== undefined && persons.foundCount !== undefined ? (
+                          persons.lostCount + persons.foundCount
+                        ) : (
+                          "Loading"
+                        )}
                       </Typography>
                       <Typography
                         variant="caption"
@@ -172,7 +176,7 @@ function Profile() {
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-900"
                     >
                       <option value="">Situation</option>
-                      <option value="Lost">Lost</option>
+                      <option value="lost">Lost</option>
                       <option value="found">Found</option>
                     </select>
                   </div>

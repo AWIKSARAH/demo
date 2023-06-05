@@ -21,7 +21,6 @@ const AnnouncementForm = ({ onNext, onCancel, handleFileChangeImage }) => {
         initialValues: {
             // Define initial values for your form fields
             name: '',
-            tel: '',
             found: '',
             dob: '',
             gender: '',
@@ -38,9 +37,7 @@ const AnnouncementForm = ({ onNext, onCancel, handleFileChangeImage }) => {
             if (!values.name) {
                 errors.name = 'This field is required';
             }
-            if (!values.tel) {
-                errors.tel = 'This field is required';
-            }
+
             if (!values.found) {
                 errors.found = 'This field is required';
             }
@@ -123,35 +120,7 @@ const AnnouncementForm = ({ onNext, onCancel, handleFileChangeImage }) => {
                                                     )}
                                                 </div>
                                             </div>
-                                            <div className="sm:col-span-4">
-                                                <label htmlFor="tel" className="block text-sm font-medium leading-6 text-gray-900">
-                                                    Tel:  (* required)
-                                                </label>
-                                                <div className="mt-2">
-                                                    <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                                                        <input
 
-                                                            type="tel"
-                                                            name="tel"
-                                                            id="tel"
-                                                            autoComplete="tel"
-                                                            className={`block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6`}
-                                                            placeholder="Contact number"
-                                                            required
-                                                            value={formik.values.tel}
-                                                            onChange={formik.handleChange}
-                                                            onBlur={formik.handleBlur}
-
-                                                        />
-
-
-
-                                                    </div>
-                                                    {formik.touched.tel && formik.errors.tel && (
-                                                        <div className="text-red-500">{formik.errors.tel}</div>
-                                                    )}
-                                                </div>
-                                            </div>
                                             <div className="sm:col-span-4">
                                                 <label htmlFor="found" className="block text-sm font-medium leading-6 text-gray-900">
                                                     Type:(* required)

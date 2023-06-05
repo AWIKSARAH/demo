@@ -34,7 +34,7 @@ export function Profile() {
   const [comment, setComment] = useState([]);
   const [name, setName] = useState("");
   const [sent, setSent] = useState(false);
-  const [url, setUrl] = useState('/img/background-1.jpg')
+  const [url, setUrl] = useState('./img/background-1.jpg')
   const [isLoading, setIsLoading] = useState(true); // Add isLoading state
 
 
@@ -49,7 +49,7 @@ export function Profile() {
         const response = await axios.get(`${import.meta.env.VITE_API_URL}a/${id}`);
         setData(response.data.data);
         //VITE_APP_IMG_URL
-        setUrl(`${import.meta.env.VITE_APP_IMG_URL}${response.data.data.idPerson.image}`)
+        setUrl(`${response.data.data.idPerson.image}`)
         setIsLoading(false); // Set isLoading to false when data is fetched
       } catch (error) {
         console.error(error);

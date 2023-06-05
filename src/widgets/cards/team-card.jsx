@@ -16,14 +16,14 @@ export function TeamCard({ img, data, position, socials }) {
 
         <img
           className="w-32 h-32 rounded-full mx-auto"
-          src={data.image ? `${import.meta.env.VITE_APP_IMG_URL}${data.image}` : '../../../public/img/logo.png'}
+          src={data.image ? `${data.image}` : '../../../public/img/logo.png'}
           alt="Profile picture"
         />
       ) : (
         <Link to={`/a/${data.disasterIds[0]}`}>
           <img
             className="w-32 h-32 rounded-full mx-auto"
-            src={data.image ? `${import.meta.env.VITE_APP_IMG_URL}${data.image}` : '../../../public/img/logo.png'}
+            src={data.image ? `${data.image}` : '../../../public/img/logo.png'}
             alt="Profile picture"
           />
         </Link>
